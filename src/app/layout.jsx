@@ -3,6 +3,7 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+
 export const metadata = {
   title: "Daros GlowCare",
   description: "Agendament system calendar controller",

@@ -1,129 +1,33 @@
 "use client";
 
-import gradiente from '../app/assets/img/gradiente.jpg';
-
 function Home() {
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
-        <div style={styles.logo}>Logo</div>
-        <nav style={styles.nav}>
-          <a href="#about" style={styles.navItem}>Sobre</a>
-          <a href="#clients" style={styles.navItem}>Clientes</a>
-          <a href="#services" style={styles.navItem}>Serviços</a>
+    <div
+      className="flex flex-col h-screen w-full bg-cover bg-center relative">
+      <header className="flex items-center justify-between p-5 bg-white bg-opacity-80 absolute top-0 left-0 w-full z-20">
+        <div className="text-2xl font-bold text-pink-500">Logo</div>
+        <nav className="flex gap-5">
+          <a href="#about" className="text-gray-800 no-underline text-lg font-bold transition-colors duration-300 hover:text-pink-500">Sobre</a>
+          <a href="#clients" className="text-gray-800 no-underline text-lg font-bold transition-colors duration-300 hover:text-pink-500">Clientes</a>
+          <a href="#services" className="text-gray-800 no-underline text-lg font-bold transition-colors duration-300 hover:text-pink-500">Serviços</a>
         </nav>
-        <a href="/auth/login" style={styles.loginButton}>Login</a>
+        <a href="/auth/login" className="bg-pink-500 text-white py-2 px-4 rounded-lg no-underline font-bold transition-colors duration-300 hover:bg-pink-600">Login</a>
       </header>
-      <div style={styles.overlay}>
-        <div style={styles.content}>
-          <h1 style={styles.title}>Bem-vindo ao Studio Skin Care</h1>
-          <p style={styles.description}>
+      <div className="absolute inset-0 bg-pink-200 bg-opacity-50 flex items-center justify-center z-10">
+        <div className="text-center text-white z-20">
+          <h1 className="text-5xl mb-5 font-bold">Bem-vindo</h1>
+          <h1 className="text-5xl mb-5 font-sacramento text-neon-pink">Daros Glow Care</h1>
+          {/* A FONTE SACRAMENTO ERA PRA SER EMENDADA MAS POR ALGUM MOTIVO ESSA CARALHA NÃO TA CARREGANDO MUDAR IMPORT GOOGLE FONT DE LUGAR NO CSS PARECE RESOLVER*/}
+          <p className="text-xl mb-8 max-w-2xl mx-auto">
             Descubra nossos tratamentos de pele personalizados e experimente a transformação que você merece.
           </p>
-          <a href="/auth/login" style={styles.button}>Comece Agora</a>
+          <a href="/auth/login" className="inline-block py-2 px-4 text-lg text-white bg-pink-500 rounded-lg no-underline transition-colors duration-300 hover:bg-pink-600">
+            Comece Agora
+          </a>
         </div>
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-    width: '100%',
-    backgroundImage: `url(${gradiente})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    position: 'relative',
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '20px',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Fundo semi-transparente
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    zIndex: 2,
-  },
-  logo: {
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-    color: '#ff69b4', // Cor rosa
-  },
-  nav: {
-    display: 'flex',
-    gap: '20px',
-  },
-  navItem: {
-    color: '#333',
-    textDecoration: 'none',
-    fontSize: '1rem',
-    fontWeight: 'bold',
-    transition: 'color 0.3s',
-  },
-  navItemHover: {
-    color: '#ff69b4',
-  },
-  loginButton: {
-    backgroundColor: '#ff69b4',
-    color: '#fff',
-    padding: '10px 20px',
-    borderRadius: '5px',
-    textDecoration: 'none',
-    fontWeight: 'bold',
-    transition: 'background-color 0.3s',
-  },
-  loginButtonHover: {
-    backgroundColor: '#ff1493',
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(255, 192, 203, 0.5)', // Cor rosa com transparência
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1,
-  },
-  content: {
-    textAlign: 'center',
-    color: '#fff',
-    zIndex: 2,
-  },
-  title: {
-    fontSize: '3rem',
-    marginBottom: '20px',
-    fontWeight: 'bold',
-  },
-  description: {
-    fontSize: '1.25rem',
-    marginBottom: '30px',
-    maxWidth: '600px',
-    margin: '0 auto',
-  },
-  button: {
-    display: 'inline-block',
-    padding: '10px 20px',
-    fontSize: '1rem',
-    color: '#fff',
-    backgroundColor: '#ff69b4', // Cor rosa brilhante
-    border: 'none',
-    borderRadius: '5px',
-    textDecoration: 'none',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s',
-  },
-  buttonHover: {
-    backgroundColor: '#ff1493',
-  },
-};
 
 export default Home;

@@ -7,6 +7,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sacramento: ['Sacramento', 'cursive'],
+      },
+      colors: {
+        'neon-pink': '#FF007F', // Adicione a cor rosa neon
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
