@@ -1,15 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+/* BOTAR IMPORT EM PRIMEIRO FAZ APARECER A FONT*/
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-
-@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
-/* BOTAR IMPORT EM PRIMEIRO FAZ APARECER A FONT*/
-
-
-body {
-  background-image: url('assets/img/gradiente.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-

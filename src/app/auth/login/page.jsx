@@ -17,9 +17,9 @@ const Login = () => {
     };
 
     return (
-        <div className="flex flex-col h-screen w-full" >
+        <div className="flex flex-col h-screen bg-blue-300 w-full" >
             <div className="flex flex-col items-center justify-center h-full p-5">
-                <h1 className="text-3xl mb-5 text-gray-800">Login</h1>
+                <h1 className="text-9xl mb-10 font-sacramento text-blue-900">Login</h1>
                 <form onSubmit={handleSubmit} className="w-full max-w-md bg-white p-5 rounded-lg shadow-md">
                     <div className="mb-4">
                         <label htmlFor="email" className="block mb-2 text-sm text-gray-600">Email:</label>
@@ -48,7 +48,7 @@ const Login = () => {
                     </button>
                 </form>
                 <p className="mt-5 text-sm text-gray-600 text-center">
-                    Não tem uma conta? <a href="/auth/register" className="text-pink-500 font-bold">Cadastre-se</a>
+                    Não tem uma conta? <a href="/auth/register" className="text-blue-500 font-bold">Cadastre-se</a>
                 </p>
             </div>
         </div>

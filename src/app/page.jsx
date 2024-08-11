@@ -13,11 +13,10 @@ function Home() {
         </nav>
         <a href="/auth/login" className="bg-pink-500 text-white py-2 px-4 rounded-lg no-underline font-bold transition-colors duration-300 hover:bg-pink-600">Login</a>
       </header>
-      <div className="absolute inset-0 bg-pink-200 bg-opacity-50 flex items-center justify-center z-10">
+      <div className="absolute inset-0 bg-blue-300 flex items-center justify-center z-10">
         <div className="text-center text-white z-20">
           <h1 className="text-5xl mb-5 font-bold">Bem-vindo</h1>
-          <h1 className="text-5xl mb-5 font-sacramento text-neon-pink">Daros Glow Care</h1>
-          {/* A FONTE SACRAMENTO ERA PRA SER EMENDADA MAS POR ALGUM MOTIVO ESSA CARALHA NÃO TA CARREGANDO MUDAR IMPORT GOOGLE FONT DE LUGAR NO CSS PARECE RESOLVER*/}
+          <h1 className="text-9xl mb-5 font-sacramento text-blue-900">Daros Glow Care</h1>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
             Descubra nossos tratamentos de pele personalizados e experimente a transformação que você merece.
           </p>
