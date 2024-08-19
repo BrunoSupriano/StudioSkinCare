@@ -9,16 +9,16 @@ const HomePage = () => {
                 <nav>
                     <ul>
                         <li className="mb-2">
-                            <a href="#agendamento" className="block py-2 px-4 rounded hover:bg-pink-300">Agendamento</a>
+                            <a href="/ERP/Agendamento" className="block py-2 px-4 rounded hover:bg-pink-300">Agendamento</a>
                         </li>
                         <li className="mb-2">
-                            <a href="#financeiro" className="block py-2 px-4 rounded hover:bg-pink-300">Financeiro</a>
+                            <a href="/ERP/Financeiro" className="block py-2 px-4 rounded hover:bg-pink-300">Financeiro</a>
                         </li>
                         <li className="mb-2">
-                            <a href="#clientes" className="block py-2 px-4 rounded hover:bg-pink-300">Clientes</a>
+                            <a href="/ERP/Clientes" className="block py-2 px-4 rounded hover:bg-pink-300">Clientes</a>
                         </li>
                         <li className="mb-2">
-                            <a href="#servicos" className="block py-2 px-4 rounded hover:bg-pink-300">Serviços</a>
+                            <a href="/ERP/Servicos" className="block py-2 px-4 rounded hover:bg-pink-300">Serviços</a>
                         </li>
                     </ul>
                 </nav>
