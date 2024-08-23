@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Sidebar from '../Components/SideBar/SideBar.jsx';
 
 const Clientes = () => {
     const [cliente, setCliente] = useState({ cpf: '', nome: '', endereco: '', celular: '', aniversario: '' });
@@ -16,8 +17,19 @@ const Clientes = () => {
     };
 
     return (
+        <div className="flex" >
+        <Sidebar />
         <div className="p-10 bg-white min-h-screen">
+            
             <h1 className="text-2xl font-bold mb-6 text-pink-800">Clientes</h1>
+            <section id="clientes" className="mt-10">
+                <h2 className="text-xl font-bold mb-4">Clientes</h2>
+                <p className="mb-4">Cadastre ou edite clientes (CPF, nome, endereço, celular, aniversário).</p>
+                <div className="bg-pink-100 p-4 rounded">
+                    {/* Componente de cadastro de clientes vai aqui */}
+                    <p>Formulário de cadastro/edição de clientes.</p>
+                </div>
+            </section>
 
             {/* Formulário de Cadastro/Edição de Cliente */}
             <div className="bg-pink-100 p-6 rounded-lg">
@@ -48,6 +60,7 @@ const Clientes = () => {
                     </button>
                 </form>
             </div>
+        </div>
         </div>
     );
 };

@@ -1,64 +1,104 @@
 "use client";
+import Sidebar from './Components/SideBar/SideBar.jsx';
+import Calendar from 'react-calendar';
+import { Line } from 'react-chartjs-2';
+import { useTable } from 'react-table';
+import { useMemo } from 'react';
+import 'react-calendar/dist/Calendar.css';
+import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, Title, Tooltip, Legend, PointElement } from 'chart.js';
+
+// Registro dos elementos necessários para o Chart.js
+ChartJS.register(LineElement, CategoryScale, LinearScale, Title, Tooltip, Legend, PointElement);
 
 const HomePage = () => {
+    // Dados do gráfico
+    const data = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        datasets: [
+            {
+                label: 'Sales',
+                data: [65, 59, 80, 81, 56, 55],
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1,
+            },
+        ],
+    };
+
+    // Definição das colunas e dados da tabela
+    const columns = useMemo(
+        () => [
+            {
+                Header: 'ID',
+                accessor: 'id',
+            },
+            {
+                Header: 'Name',
+                accessor: 'name',
+            },
+            {
+                Header: 'Email',
+                accessor: 'email',
+            },
+        ],
+        []
+    );
+
+    const dataTable = useMemo(
+        () => [
+            { id: 1, name: 'John Doe', email: 'john.doe@example.com' },
+            { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com' },
+            // Adicione mais dados aqui
+        ],
+        []
+    );
+
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data: dataTable });
+
     return (
-        <div className="flex min-h-screen">
-            {/* Menu Lateral */}
-            <aside className="w-64 bg-pink-200 text-pink-800 p-6">
-                <h2 className="text-2xl font-bold mb-4">ERP Skincare</h2>
-                <nav>
-                    <ul>
-                        <li className="mb-2">
-                            <a href="/ERP/Agendamento" className="block py-2 px-4 rounded hover:bg-pink-300">Agendamento</a>
-                        </li>
-                        <li className="mb-2">
-                            <a href="/ERP/Financeiro" className="block py-2 px-4 rounded hover:bg-pink-300">Financeiro</a>
-                        </li>
-                        <li className="mb-2">
-                            <a href="/ERP/Clientes" className="block py-2 px-4 rounded hover:bg-pink-300">Clientes</a>
-                        </li>
-                        <li className="mb-2">
-                            <a href="/ERP/Servicos" className="block py-2 px-4 rounded hover:bg-pink-300">Serviços</a>
-                        </li>
-                    </ul>
-                </nav>
-            </aside>
-
-            {/* Conteúdo Principal */}
+        <div className="flex">
+            <Sidebar />
             <main className="flex-1 p-10 bg-white">
-                <section href="/Agendamento" id="agendamento">
-                    <h2 className="text-xl font-bold mb-4">Agendamento</h2>
-                    <p className="mb-4">Gerencie a agenda, agende procedimentos, edite dias/horários e visualize a agenda de forma intuitiva.</p>
+                <section id="dashboard" className="mt-10">
+                    <h2 className="text-xl font-bold mb-4">Dashboard</h2>
                     <div className="bg-pink-100 p-4 rounded">
-                        {/* Componente para agendamento vai aqui */}
-                        <p>Interface de gestão de agenda.</p>
-                    </div>
-                </section>
+                        <div className="mb-6">
+                            <h3 className="text-lg font-semibold mb-2">Tabela de Dados</h3>
+                            <table {...getTableProps()} className="w-full border border-gray-300">
+                                <thead>
+                                    {headerGroups.map(headerGroup => (
+                                        <tr {...headerGroup.getHeaderGroupProps()}>
+                                            {headerGroup.headers.map(column => (
+                                                <th {...column.getHeaderProps()} className="border-b px-4 py-2 text-left">{column.render('Header')}</th>
+                                            ))}
+                                        </tr>
+                                    ))}
+                                </thead>
+                                <tbody {...getTableBodyProps()}>
+                                    {rows.map(row => {
+                                        prepareRow(row);
+                                        return (
+                                            <tr {...row.getRowProps()}>
+                                                {row.cells.map(cell => (
+                                                    <td {...cell.getCellProps()} className="border-b px-4 py-2">{cell.render('Cell')}</td>
+                                                ))}
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
 
-                <section id="financeiro" className="mt-10">
-                    <h2 className="text-xl font-bold mb-4">Financeiro</h2>
-                    <p className="mb-4">Selecione o mês para visualizar os lucros diários.</p>
-                    <div className="bg-pink-100 p-4 rounded">
-                        {/* Componente de financeiro vai aqui */}
-                        <p>Interface para visualizar lucros diários por mês.</p>
-                    </div>
-                </section>
-
-                <section id="clientes" className="mt-10">
-                    <h2 className="text-xl font-bold mb-4">Clientes</h2>
-                    <p className="mb-4">Cadastre ou edite clientes (CPF, nome, endereço, celular, aniversário).</p>
-                    <div className="bg-pink-100 p-4 rounded">
-                        {/* Componente de cadastro de clientes vai aqui */}
-                        <p>Formulário de cadastro/edição de clientes.</p>
-                    </div>
-                </section>
-
-                <section id="servicos" className="mt-10">
-                    <h2 className="text-xl font-bold mb-4">Serviços</h2>
-                    <p className="mb-4">Cadastre ou edite tipos de serviços (nome, duração, valor).</p>
-                    <div className="bg-pink-100 p-4 rounded">
-                        {/* Componente de cadastro de serviços vai aqui */}
-                        <p>Formulário de cadastro/edição de serviços.</p>
+                        <div className="mb-6">
+                            <h3 className="text-lg font-semibold mb-2">Calendário</h3>
+                            <Calendar className="bg-white rounded shadow" />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold mb-2">Gráfico de Vendas</h3>
+                            <div className="bg-white rounded shadow p-4">
+                                <Line data={data} />
+                            </div>
+                        </div>
                     </div>
                 </section>
             </main>

@@ -3,6 +3,7 @@
 // pages/agendamento.js
 import React, { useState } from 'react';
 import { format, addDays } from 'date-fns';
+import Sidebar from '../Components/SideBar/SideBar.jsx';
 
 const AgendamentoPage = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -39,8 +40,18 @@ const AgendamentoPage = () => {
     };
 
     return (
+        <div className='flex'>
+            <Sidebar />
         <div className="p-10 bg-pink-100 min-h-screen">
             <h1 className="text-3xl font-bold mb-6 text-pink-800">Agendamento</h1>
+            <section href="/Agendamento" id="agendamento">
+                    <h2 className="text-xl font-bold mb-4">Agendamento</h2>
+                    <p className="mb-4">Gerencie a agenda, agende procedimentos, edite dias/horários e visualize a agenda de forma intuitiva.</p>
+                    <div className="bg-pink-100 p-4 rounded">
+                        {/* Componente para agendamento vai aqui */}
+                        <p>Interface de gestão de agenda.</p>
+                    </div>
+                </section>
             <div className="bg-white p-6 rounded shadow-md">
                 <div className="flex justify-between items-center mb-4">
                     <button onClick={() => handleDateChange(-1)} className="bg-pink-300 text-white py-2 px-4 rounded">
@@ -103,6 +114,7 @@ const AgendamentoPage = () => {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     );
 };
