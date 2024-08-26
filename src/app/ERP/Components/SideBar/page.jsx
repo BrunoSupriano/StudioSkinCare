@@ -1,9 +1,9 @@
 "use client";
-import Sidebar from './SideBar.js';
+import Sidebar from './SideBar.jsx';
 
 export default function PageSideBar() {
   return (
-    <div className="flex p-2 align-middle">
+    <div>
       <Sidebar />
     </div>
   );
