@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-import Sidebar from '../Components/SideBar/SideBar.jsx';
+import { useMemo } from 'react';
+import Sidebar from '../../Components/SideBar/SideBar.jsx';
+import Table from '../../Components/Table/Table.jsx';
+import '../../Components/Table/table.css';
 
 const Clientes = () => {
     const [cliente, setCliente] = useState({ cpf: '', nome: '', endereco: '', celular: '', aniversario: '' });
@@ -16,47 +19,66 @@ const Clientes = () => {
         console.log(cliente);
     };
 
-    return (
-        <div className="flex min-h-screen ">
-            <Sidebar />
-            <div className="flex-1 p-10">
-                <h1 className="text-2xl font-bold mb-6 text-pink-800">Clientes</h1>
-                <section id="clientes" className="mt-10">
-                    <h2 className="text-xl font-bold mb-4">Clientes</h2>
-                    <p className="mb-4">Cadastre ou edite clientes (CPF, nome, endereço, celular, aniversário).</p>
-                    <div className="bg-pink-100 p-4 rounded mb-6">
-                        {/* Componente de cadastro de clientes vai aqui */}
-                        <p>Formulário de cadastro/edição de clientes.</p>
-                    </div>
-                </section>
+        // Definição das colunas e dados da tabela
+        const columns = useMemo(
+            () => [
+                {
+                    Header: 'User ID',
+                    accessor: 'userId',
+                },
+                {
+                    Header: 'Username',
+                    accessor: 'username',
+                },
+                {
+                    Header: 'Role',
+                    accessor: 'role',
+                },
+            ],
+            []
+        );
+    
+        const dataTable = useMemo(
+            () => [
+                { userId: 1, username: 'alice', role: 'Admin' },
+                { userId: 2, username: 'bob', role: 'User' },
+                // Adicione mais dados aqui
+            ],
+            []
+        );
 
-                {/* Formulário de Cadastro/Edição de Cliente */}
-                <div className="bg-pink-100 p-6 rounded-lg">
-                    <h2 className="text-xl font-semibold mb-4">Cadastrar/Editar Cliente</h2>
+    return (
+        <div className="flex min-h-screen">
+            <Sidebar />
+            <div className="flex-1 p-3">
+                <div className="formcontainer">
+                    <h1 className="title">Cliente</h1>
+                    <p className="mb-4 text-pink-700">Selecione um mês para visualizar os lucros diários e obter insights financeiros.</p>
                     <form className="space-y-4" onSubmit={handleSubmit}>
                         <div>
-                            <label className="block text-pink-700">CPF</label>
-                            <input type="text" name="cpf" value={cliente.cpf} onChange={handleChange} className="w-full p-2 border border-pink-300 rounded" placeholder="Digite o CPF" />
+                            <label className="formlabel">CPF</label>
+                            <input type="text" name="cpf" value={cliente.cpf} onChange={handleChange} className="Custom-input" placeholder="Digite o CPF" />
                         </div>
                         <div>
-                            <label className="block text-pink-700">Nome</label>
-                            <input type="text" name="nome" value={cliente.nome} onChange={handleChange} className="w-full p-2 border border-pink-300 rounded" placeholder="Digite o nome" />
+                            <label className="formlabel">Nome</label>
+                            <input type="text" name="nome" value={cliente.nome} onChange={handleChange} className="Custom-input" placeholder="Digite o nome" />
                         </div>
                         <div>
-                            <label className="block text-pink-700">Endereço</label>
-                            <input type="text" name="endereco" value={cliente.endereco} onChange={handleChange} className="w-full p-2 border border-pink-300 rounded" placeholder="Digite o endereço" />
+                            <label className="formlabel">Endereço</label>
+                            <input type="text" name="endereco" value={cliente.endereco} onChange={handleChange} className="Custom-input" placeholder="Digite o endereço" />
                         </div>
                         <div>
-                            <label className="block text-pink-700">Celular</label>
-                            <input type="text" name="celular" value={cliente.celular} onChange={handleChange} className="w-full p-2 border border-pink-300 rounded" placeholder="Digite o celular" />
+                            <label className="formlabel">Celular</label>
+                            <input type="text" name="celular" value={cliente.celular} onChange={handleChange} className="Custom-input" placeholder="Digite o celular" />
                         </div>
                         <div>
-                            <label className="block text-pink-700">Aniversário</label>
-                            <input type="date" name="aniversario" value={cliente.aniversario} onChange={handleChange} className="w-full p-2 border border-pink-300 rounded" />
+                            <label className="formlabel">Aniversário</label>
+                            <input type="date" name="aniversario" value={cliente.aniversario} onChange={handleChange} className="Custom-input" />
                         </div>
-                        <button className="bg-pink-500 text-white py-2 px-4 rounded hover:bg-pink-600">
+                        <button className="save">
                             Salvar Cliente
                         </button>
+                        <Table columns={columns} data={dataTable} />                    
                     </form>
                 </div>
             </div>

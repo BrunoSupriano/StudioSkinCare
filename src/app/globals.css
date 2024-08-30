@@ -3,3 +3,102 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+button.save {
+    color: #ffffff;
+    background-color: #db2777;   
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button.save:hover {
+    background-color: #fe9ac7; /* Cor de fundo ao passar o mouse */
+    color: #f3f4f6; /* Cor do texto ao passar o mouse (opcional) */
+}
+
+
+button.Load {
+    font-family: 'Sacramento', cursive;
+    font-size: 1.5rem;
+    color: #fff;
+    background-color: rgb(0, 255, 174);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button.Action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1rem; 
+    color: #fff;
+    background-color: #f55381; 
+    padding: 0.5rem 2rem; 
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.Action:hover {
+    background-color: #F582A2; 
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: white;
+    font-size: 1.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.menu-item:hover {
+    background-color: #F582A2;
+}
+
+.menu-item .icon {
+    font-size: 2.5rem; 
+}
+
+.menu-item.active {
+    background-color:  #f55381; 
+}
+
+
+.formcontainer {
+    background-color: #FFE9EF; 
+    padding: 1.5rem; 
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.formlabel {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: #db2777;
+}
+
+.title {
+    font-size: 3rem;
+    font-family: 'Sacramento', cursive;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: #db2777;
+}
+
+.Custom-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #db2777;
+    border-radius: 0.375rem;
+}

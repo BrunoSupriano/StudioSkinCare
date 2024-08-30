@@ -1,32 +1,89 @@
 "use client";
 
-function Home() {
-  return (
-    <div
-      className="flex flex-col h-screen w-full bg-pink-100 bg-cover bg-center relative">
-      <header className="flex items-center justify-between p-5 bg-pink-50 bg-opacity-90 absolute top-0 left-0 w-full z-20">
-        <div className="text-2xl font-bold text-pink-600">Logo</div>
-        <nav className="flex gap-5">
-          <a href="#about" className="text-pink-800 no-underline text-lg font-bold transition-colors duration-300 hover:text-pink-600">Sobre</a>
-          <a href="#clients" className="text-pink-800 no-underline text-lg font-bold transition-colors duration-300 hover:text-pink-600">Clientes</a>
-          <a href="#services" className="text-pink-800 no-underline text-lg font-bold transition-colors duration-300 hover:text-pink-600">Serviços</a>
-        </nav>
-        <a href="/auth/login" className="bg-pink-500 text-white py-2 px-4 rounded-lg no-underline font-bold transition-colors duration-300 hover:bg-pink-600">Login</a>
-      </header>
-      <div className="absolute inset-0 bg-pink-200 flex items-center justify-center z-10">
-        <div className="text-center text-pink-800 z-20">
-          <h1 className="text-5xl mb-5 font-bold">Bem-vindo</h1>
-          <h1 className="text-9xl mb-5 font-sacramento text-pink-600">Daros Glow Care</h1>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Descubra nossos tratamentos de pele personalizados e experimente a transformação que você merece.
-          </p>
-          <a href="/auth/login" className="inline-block py-2 px-4 text-lg text-white bg-pink-500 rounded-lg no-underline transition-colors duration-300 hover:bg-pink-600">
-            Comece Agora
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
+import Sidebar from './Components/SideBar/SideBar.jsx';
+import Calendar from 'react-calendar';
+import { Line } from 'react-chartjs-2';
+import { useMemo } from 'react';
+import 'react-calendar/dist/Calendar.css';
+import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, Title, Tooltip, Legend, PointElement } from 'chart.js';
+import Table from './Components/Table/Table.jsx';
+import './Components/Table/Table.jsx';
 
-export default Home;
+// Registro dos elementos necessários para o Chart.js
+ChartJS.register(LineElement, CategoryScale, LinearScale, Title, Tooltip, Legend, PointElement);
+
+const HomePage = () => {
+    // Dados do gráfico
+    const data = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        datasets: [
+            {
+                label: 'Sales',
+                data: [65, 59, 80, 81, 56, 55],
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1,
+            },
+        ],
+    };
+
+    // Definição das colunas e dados da tabela
+    const columns = useMemo(
+        () => [
+            {
+                Header: 'ID',
+                accessor: 'id',
+            },
+            {
+                Header: 'Name',
+                accessor: 'name',
+            },
+            {
+                Header: 'Email',
+                accessor: 'email',
+            },
+        ],
+        []
+    );
+
+    const dataTable = useMemo(
+        () => [
+            { id: 1, name: 'John Doe', email: 'john.doe@example.com' },
+            { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com' },
+            // Adicione mais dados aqui
+        ],
+        []
+    );
+
+    return (
+        <div className="flex min-h-screen">
+            <Sidebar />
+            <main className="flex-1 p-3">
+                <div className='formcontainer'>
+                    <h2 className="title">Dashboard</h2>
+                    <p className="mb-4 text-pink-700">Visualize os indicadores dos agendamentos.</p>
+                    <section id="dashboard" className="">
+                        <div className="mb-8">
+                            <h2 className="formlabel">Tabela de Dados</h2>
+                            <Table columns={columns} data={dataTable} />
+                        </div>
+                        <div className='flex '>
+                            <div className="mb-8">
+                                <h3 className="text-lg font-semibold mb-4 text-pink-800">Calendário</h3>
+                                <Calendar className="bg-white rounded shadow-md" />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold mb-4 text-pink-800">Gráfico de Vendas</h3>
+                                <div className="bg-white rounded-lg shadow-md p-4">
+                                    <Line data={data} />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    );
+};
+
+export default HomePage;
