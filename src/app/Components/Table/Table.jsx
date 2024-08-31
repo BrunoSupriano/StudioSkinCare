@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTable } from 'react-table';
-import './table.css'; // Certifique-se de que o CSS está no mesmo diretório ou ajuste o caminho
+import '../../css/table.css'; // Certifique-se de que o CSS está no mesmo diretório ou ajuste o caminho
 
 const Table = ({ columns, data }) => {
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data });

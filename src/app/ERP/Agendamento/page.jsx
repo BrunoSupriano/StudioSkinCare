@@ -27,17 +27,6 @@ const AgendamentoPage = () => {
         }
     };
 
-    const renderAgenda = () => {
-        return agendamentos
-            .filter((agendamento) => format(agendamento.date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd'))
-            .map((agendamento, index) => (
-                <div key={index} className="bg-pink-600 p-4 rounded mb-2">
-                    <p><strong>Cliente:</strong> {agendamento.cliente}</p>
-                    <p><strong>Horário:</strong> {agendamento.horario}</p>
-                    <p><strong>Serviço:</strong> {agendamento.servico}</p>
-                </div>
-            ));
-    };
 
     return (
         <div className="flex min-h-screen">

@@ -9,7 +9,7 @@ const Sidebar = () => {
 
     return (
         <div className='flex p-2 align-middle'>
-            <div className="bg-rose-300 w-72 h-[calc(100vh-20px)] p-6 rounded-3xl shadow-lg flex flex-col ">
+            <div className="bg-rose-300 w-50 h-[calc(100vh-20px)] p-4 rounded-3xl shadow-lg flex flex-col ">
                 <div className="flex flex-col h-full">
                     <span className="font-bold text-4xl font-sacramento text-black">Daros Glow Care</span>
                     <div className="flex flex-col gap-4 flex-1 justify-center" name="options">

@@ -1,7 +1,51 @@
 "use client";
+import React, { useState } from 'react';
+import { useMemo } from 'react';
 import Sidebar from '../../Components/SideBar/SideBar.jsx';
+import Table from '../../Components/Table/Table.jsx';
+import '../../css/table.css';
 
 const Financeiro = () => {
+
+    const [cliente, setCliente] = useState({ cpf: '', nome: '', endereco: '', celular: '', aniversario: '' });
+
+    const handleChange = (e) => {
+        setCliente({ ...cliente, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(cliente);
+    };
+
+        // Definição das colunas e dados da tabela
+        const columns = useMemo(
+            () => [
+                {
+                    Header: 'User ID',
+                    accessor: 'userId',
+                },
+                {
+                    Header: 'Username',
+                    accessor: 'username',
+                },
+                {
+                    Header: 'Role',
+                    accessor: 'role',
+                },
+            ],
+            []
+        );
+    
+        const dataTable = useMemo(
+            () => [
+                { userId: 1, username: 'alice', role: 'Admin' },
+                { userId: 2, username: 'bob', role: 'User' },
+                // Adicione mais dados aqui
+            ],
+            []
+        );
+
     return (
         <div className='flex min-h-screen'>
             <Sidebar />
@@ -9,7 +53,7 @@ const Financeiro = () => {
                 <div className="formcontainer">
                     <h1 className="title">Financeiro</h1>
                     <p className="mb-4 text-pink-700">Selecione um mês para visualizar os lucros diários e obter insights financeiros.</p>
-
+                    <div className='space-y-4'>
                     <div className="bg-white p-6 rounded shadow-md">
                         <label htmlFor="month" className="block text-pink-800 mb-2 font-semibold">Selecione o Mês:</label>
                         <select id="month" className="bg-pink-100 text-pink-800 py-2 px-4 rounded">
@@ -18,10 +62,7 @@ const Financeiro = () => {
                             <option value="march">Março</option>
                         </select>
                     </div>
-
-                    <div className="mt-8 bg-pink-100 p-6 rounded shadow-md">
-                        <h2 className="text-xl font-semibold text-pink-800">Lucros Diários</h2>
-                        <p className="text-pink-700 mt-4">Selecione um mês para ver o relatório.</p>
+                    <Table columns={columns} data={dataTable} />
                     </div>
                 </div>
             </div>
