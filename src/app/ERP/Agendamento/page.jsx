@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { format, addDays } from 'date-fns';
 import Sidebar from '../../Components/SideBar/SideBar.jsx';
+import DataTable from '../../Components/Table/Dashboard/DashTable.jsx';
 
 const AgendamentoPage = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -80,6 +81,7 @@ const AgendamentoPage = () => {
                                 Próximo
                             </button>
                         </div>
+                            <DataTable />
                     </div>
                 </div>
             </div>

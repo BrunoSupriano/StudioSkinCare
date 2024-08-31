@@ -15,7 +15,6 @@ const HomePage = () => {
                     <h2 className="title">Dashboard</h2>
                     <p className="mb-4 text-pink-700">Visualize os indicadores dos agendamentos.</p>
                     <section id="dashboard" className="">
-                        <DataTable />
                         <div className='flex'>
                             <div className="ml-8 p-4 bg-white rounded-lg shadow-lg">
                                 <h3 className="formlabel">Calendário</h3>
@@ -23,6 +22,7 @@ const HomePage = () => {
                             </div>
                                 <SalesChart />
                         </div>
+                        <DataTable />
                     </section>
                 </div>
             </main>
