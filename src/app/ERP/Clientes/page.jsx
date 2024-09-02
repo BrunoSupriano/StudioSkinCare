@@ -7,6 +7,7 @@ import ClienteForm from './ClientForm.jsx';
 import DataTable from './DataTable.jsx';
 import PopupForm from '../../Components/PopUp/PopUpForm.jsx';   
 import '../../css/table.css';
+import SearchBar from '../../Components/SearchBar/SearchBar.jsx'
 
 const Clientes = () => {
     const [cliente, setCliente] = useState({ cpf: '', nome: '', endereco: '', celular: '', aniversario: '' });
@@ -28,6 +29,7 @@ const Clientes = () => {
             <div className="flex-1 p-3">
                 <div className="formcontainer">
                     <h1 className="title">Clientes</h1>
+                    <SearchBar placeholder="Pesquisar Cliente..."/>
                     <button className="save" onClick={() => setIsPopupOpen(true)}>
                         Cadastrar Cliente
                     </button>
