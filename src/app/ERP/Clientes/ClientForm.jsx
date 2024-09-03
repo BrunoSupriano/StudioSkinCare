@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ClienteForm = ({ handleSubmit, handleChange, cliente }) => {
+const ClienteForm = ({ handleSubmit, handleChange, cliente, isEditing }) => {
     return (
         <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
@@ -25,7 +25,7 @@ const ClienteForm = ({ handleSubmit, handleChange, cliente }) => {
             </div>
             <div className="flex justify-center">
                 <button className="save bg-pink-500 text-white px-4 py-2 rounded">
-                    Salvar Cliente
+                    {isEditing ? "Salvar Alterações" : "Cadastrar Cliente"}
                 </button>
             </div>
         </form>

@@ -1,8 +1,9 @@
-// src/Components/DataTable.jsx
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import Table from '../../Components/Table/Table.jsx';
+import PopupForm from '../../Components/PopUp/PopUpForm.jsx';
+import ClienteForm from './ClientForm.jsx';
 
-const DataTable = () => {
+const DataTable = ({ setCliente, setIsPopupOpen, setIsEditing }) => {
     const columns = useMemo(
         () => [
             { Header: 'Nome', accessor: 'nome' },
@@ -10,6 +11,22 @@ const DataTable = () => {
             { Header: 'Endereço', accessor: 'endereco' },
             { Header: 'CPF', accessor: 'cpf' },
             { Header: 'Aniversário', accessor: 'aniversario' },
+            {
+                Header: 'Ações',
+                accessor: 'acoes',
+                Cell: ({ row }) => (
+                    <button
+                        className="text-white bg-pink-500 hover:bg-pink-600 rounded px-2 py-1"
+                        onClick={() => {
+                            setCliente(row.original);
+                            setIsEditing(true); // Define como modo de edição
+                            setIsPopupOpen(true);
+                        }}
+                    >
+                        Editar
+                    </button>
+                ),
+            },
         ],
         []
     );
