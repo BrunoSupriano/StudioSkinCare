@@ -7,42 +7,17 @@ const SearchBar = ({ placeholder }) => {
     };
 
     return (
-        <form onSubmit={handleSearch} style={styles.form}>
+        <form onSubmit={handleSearch} className="flex items-center justify-left ">
             <input
                 type="text"
                 placeholder={placeholder || "Search..."}
-                style={styles.input}
+                className="px-4 py-2 border-2 border-pink-500 rounded-lg outline-none focus:border-pink-200"
             />
-            <button type="submit" style={styles.button}>
+            <button type="submit" className="bg-transparent border-none text-pink-500 text-2xl ml-[-40px] cursor-pointer">
                 🔍
             </button>
         </form>
     );
-};
-
-const styles = {
-    form: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '5px',
-    },
-    input: {
-        padding: '10px',
-        border: '2px solid pink',
-        borderRadius: '25px',
-        outline: 'none',
-        width: '100%',
-        maxWidth: '400px',
-    },
-    button: {
-        backgroundColor: 'transparent',
-        border: 'none',
-        color: 'pink',
-        fontSize: '20px',
-        marginLeft: '-40px', // Alinha o ícone dentro do input
-        cursor: 'pointer',
-    },
 };
 
 export default SearchBar;
