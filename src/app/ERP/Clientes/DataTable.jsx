@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import Table from '../../Components/Table/Table.jsx';
-import PopupForm from '../../Components/PopUp/PopUpForm.jsx';
-import ClienteForm from './ClientForm.jsx';
+import { useCliente } from './ClienteContext.jsx'; // Importe o contexto para usar as funções
 
-const DataTable = ({ setCliente, setIsPopupOpen, setIsEditing }) => {
+const DataTable = () => {
+    const { setIsEditing, setSelectedCliente, openPopupForEdit } = useCliente();
+
     const columns = useMemo(
         () => [
             { Header: 'Nome', accessor: 'nome' },
@@ -17,18 +18,14 @@ const DataTable = ({ setCliente, setIsPopupOpen, setIsEditing }) => {
                 Cell: ({ row }) => (
                     <button
                         className="text-white bg-pink-500 hover:bg-pink-600 rounded px-2 py-1"
-                        onClick={() => {
-                            setCliente(row.original);
-                            setIsEditing(true); // Define como modo de edição
-                            setIsPopupOpen(true);
-                        }}
+                        onClick={() => openPopupForEdit(row.original)}
                     >
                         Editar
                     </button>
                 ),
             },
         ],
-        []
+        [openPopupForEdit]
     );
 
     const data = useMemo(
@@ -52,7 +49,9 @@ const DataTable = ({ setCliente, setIsPopupOpen, setIsEditing }) => {
         []
     );
 
-    return <Table columns={columns} data={data} />;
+    return (
+        <Table columns={columns} data={data} />
+    );
 };
 
 export default DataTable;

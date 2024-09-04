@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useMemo } from 'react';
 import Sidebar from '../../Components/SideBar/SideBar.jsx';
 import Table from '../../Components/Table/Table.jsx';
-import '../../css/table.css';
+import '../../Components/Table/Table.css';
 
 const Servicos = () => {
 

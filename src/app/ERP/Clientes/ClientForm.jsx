@@ -1,33 +1,32 @@
 import React from 'react';
 
-const ClienteForm = ({ handleSubmit, handleChange, cliente, isEditing }) => {
+const ClienteForm = ({ handleSubmit, handleChange, cliente }) => {
+    // Garantir que cliente tenha um valor padrão
+    const defaultCliente = cliente || { nome: '', celular: '', endereco: '', cpf: '', aniversario: '' };
+
     return (
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div>
                 <label className="formlabel">Nome</label>
-                <input type="text" name="nome" value={cliente.nome} onChange={handleChange} className="Custom-input" placeholder="Digite o nome" />
+                <input type="text" name="nome" value={defaultCliente.nome} onChange={handleChange} className="Custom-input" placeholder="Digite o nome" />
             </div>
             <div>
                 <label className="formlabel">Celular</label>
-                <input type="text" name="celular" value={cliente.celular} onChange={handleChange} className="Custom-input" placeholder="Digite o celular" />
+                <input type="text" name="celular" value={defaultCliente.celular} onChange={handleChange} className="Custom-input" placeholder="Digite o celular" />
             </div>
             <div>
                 <label className="formlabel">Endereço</label>
-                <input type="text" name="endereco" value={cliente.endereco} onChange={handleChange} className="Custom-input" placeholder="Digite o endereço" />
+                <input type="text" name="endereco" value={defaultCliente.endereco} onChange={handleChange} className="Custom-input" placeholder="Digite o endereço" />
             </div>
             <div>
                 <label className="formlabel">CPF</label>
-                <input type="text" name="cpf" value={cliente.cpf} onChange={handleChange} className="Custom-input" placeholder="Digite o CPF" />
+                <input type="text" name="cpf" value={defaultCliente.cpf} onChange={handleChange} className="Custom-input" placeholder="Digite o CPF" />
             </div>
             <div>
                 <label className="formlabel">Aniversário</label>
-                <input type="date" name="aniversario" value={cliente.aniversario} onChange={handleChange} className="Custom-input" />
+                <input type="date" name="aniversario" value={defaultCliente.aniversario} onChange={handleChange} className="Custom-input" placeholder="Digite o aniversário" />
             </div>
-            <div className="flex justify-center">
-                <button className="save bg-pink-500 text-white px-4 py-2 rounded">
-                    {isEditing ? "Salvar Alterações" : "Cadastrar Cliente"}
-                </button>
-            </div>
+            <button type="submit" className="text-white bg-pink-500 hover:bg-pink-600 rounded px-4 py-2">Salvar</button>
         </form>
     );
 };
