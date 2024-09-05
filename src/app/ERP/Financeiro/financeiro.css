@@ -1,0 +1,10 @@
+.table table:nth-child(odd) {
+    background-color: #f9f9f9; /* Cor para linhas ímpares */
+}
+
+.background-gray {
+    background-color: #C7C7C8;
+    border: black solid 1px;
+    font-weight: 500;
+    padding: 10px;
+}
