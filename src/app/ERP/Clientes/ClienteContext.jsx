@@ -5,7 +5,7 @@ const ClienteContext = createContext();
 export const ClienteProvider = ({ children }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const [cliente, setCliente] = useState({ nome: '', celular: '', endereco: '', cpf: '', aniversario: '' });
+    const [cliente, setCliente] = useState(null);
 
     const openCreatePopup = () => {
         setCliente({ nome: '', celular: '', endereco: '', cpf: '', aniversario: '' });

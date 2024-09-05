@@ -26,7 +26,6 @@ const ClienteForm = ({ handleSubmit, handleChange, cliente }) => {
                 <label className="formlabel">Aniversário</label>
                 <input type="date" name="aniversario" value={defaultCliente.aniversario} onChange={handleChange} className="Custom-input" placeholder="Digite o aniversário" />
             </div>
-            <button type="submit" className="text-white bg-pink-500 hover:bg-pink-600 rounded px-4 py-2">Salvar</button>
         </form>
     );
 };

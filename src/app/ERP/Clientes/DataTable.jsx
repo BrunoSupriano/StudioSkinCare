@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import Table from '../../Components/Table/Table.jsx';
-import { useCliente } from './ClienteContext.jsx'; // Importe o contexto para usar as funções
+import { useCliente } from './ClienteContext.jsx';
 
 const DataTable = () => {
-    const { setIsEditing, setSelectedCliente, openPopupForEdit } = useCliente();
+    const { openPopupForEdit } = useCliente();
 
     const columns = useMemo(
         () => [
