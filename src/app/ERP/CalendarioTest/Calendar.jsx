@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './Calendar.css'; // Importa o arquivo CSS moderno
+import './Calendar.css'; // Importa o arquivo CSS
 
 const getDaysInMonth = (year, month) => {
     const date = new Date(year, month, 1);
@@ -43,6 +43,59 @@ const Calendar = () => {
             setEvents(newEvents);
         }
     };
+    
+    const editEvent = (oldDay, eventTitle) => {
+        const newDateInput = prompt('Digite a nova data para o evento (no formato YYYY-MM-DD):');
+        if (newDateInput) {
+            const [year, month, day] = newDateInput.split('-');
+            const newDay = new Date(year, month - 1, day);  // Corrigindo o mês
+    
+            const newDayKey = newDay.toDateString();
+    
+            // Remover o evento da data antiga
+            const updatedEvents = { ...events };
+            updatedEvents[oldDay] = updatedEvents[oldDay].filter((event) => event !== eventTitle);
+    
+            // Adicionar o evento à nova data
+            if (!updatedEvents[newDayKey]) {
+                updatedEvents[newDayKey] = [];
+            }
+            updatedEvents[newDayKey].push(eventTitle);
+    
+            setEvents(updatedEvents);
+        }
+    };
+
+    const handleDragStart = (event, day, eventTitle) => {
+        event.dataTransfer.setData('text/plain', JSON.stringify({ day: day.toDateString(), eventTitle }));
+    };
+
+    const handleDrop = (event, day) => {
+        event.preventDefault();
+        const eventData = JSON.parse(event.dataTransfer.getData('text/plain'));
+        const oldDay = eventData.day;
+        const eventTitle = eventData.eventTitle;
+
+        const oldEvents = { ...events };
+
+        // Remover o evento da data antiga
+        const filteredEvents = oldEvents[oldDay].filter((title) => title !== eventTitle);
+        if (filteredEvents.length === 0) {
+            delete oldEvents[oldDay];
+        } else {
+            oldEvents[oldDay] = filteredEvents;
+        }
+
+        // Adicionar o evento na nova data
+        const newDayKey = day.toDateString();
+        const newEvents = { ...oldEvents, [newDayKey]: [...(oldEvents[newDayKey] || []), eventTitle] };
+
+        setEvents(newEvents);
+    };
+
+    const handleDragOver = (event) => {
+        event.preventDefault();
+    };
 
     const days = getDaysInMonth(currentYear, currentMonth);
 
@@ -56,12 +109,25 @@ const Calendar = () => {
 
             <div className="days">
                 {days.map((day) => (
-                    <div key={day} className="day" onClick={() => addEvent(day)}>
+                    <div
+                        key={day}
+                        className="day"
+                        onClick={() => addEvent(day)}
+                        onDrop={(e) => handleDrop(e, day)}
+                        onDragOver={handleDragOver}
+                    >
                         <span>{day.getDate()}</span>
                         {events[day.toDateString()] && (
                             <ul className="events">
-                                {events[day.toDateString()].map((event, idx) => (
-                                    <li key={idx}>{event}</li>
+                                {events[day.toDateString()].map((eventTitle, idx) => (
+                                    <li
+                                        key={idx}
+                                        draggable
+                                        onDragStart={(e) => handleDragStart(e, day, eventTitle)}
+                                        onClick={() => editEvent(day.toDateString(), eventTitle)} // Adiciona a função de editar ao clicar no evento
+                                    >
+                                        {eventTitle}
+                                    </li>
                                 ))}
                             </ul>
                         )}
