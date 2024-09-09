@@ -20,7 +20,7 @@
     "framer-motion": "^11.3.28",
     "micromatch": "^4.0.7",
     "moment": "^2.30.1",
-    "next": "13.4.8",
+    "next": "^14.2.9",
     "react": "^18",
     "react-big-calendar": "^1.13.2",
     "react-calendar": "^5.0.0",
