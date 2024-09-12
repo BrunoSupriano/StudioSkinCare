@@ -1,0 +1,207 @@
+
+.calendario {
+    flex: 1;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+}
+
+.calendariocontainer {
+    background-color: #FFE9EF;
+    border-radius: 1rem;
+    height: 100vh;
+    width: 80%;
+    padding: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 20%;
+    min-width: 300px;
+    background-color: #f7b2b2;
+    border-left: 1px solid #bbb;
+    padding: 20px;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.toolbar-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f7cfcf;
+    padding: 16px;
+    border-bottom: 1px solid #f55381;
+}
+
+.mesAno {
+    width: 60%;
+    color: #333;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.dirtop {
+    width: 30%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 30px;
+}
+
+/* Header e Botoes do Calendário */
+.rbc-toolbar {
+    background-color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
+    border-bottom: 2px solid #f55381;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.rbc-toolbar-label {
+    font-size: 30px;
+    color: #f55381;
+}
+
+.rbc-btn-group > button {
+    border: none;
+    background-color: transparent;
+}
+
+.rbc-toolbar button {
+    color: #f55381;
+    background-color: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.rbc-toolbar button:hover {
+    background-color: #ffe9ef;
+}
+
+.rbc-toolbar button:active,
+.rbc-toolbar button.rbc-active {
+    background-color: #f38ba8;
+    color: #fff;
+}
+
+/* Cabeçalho dos Dias */
+.rbc-header {
+    color: #f55381;
+    font-size: 18px;
+    background-color: #ffe9ef;
+    border: none !important; /* Remove qualquer borda */
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: none; /* Remove qualquer sombra */
+}
+
+.rbc-button-link{
+    font-size: 16px; /* Ajuste o tamanho da fonte */
+    font-weight: bold; /* Deixa o número mais destacado */
+    color: #f55381; /* Cor do número */
+    padding: 5px;
+    margin: 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    top: 5px;
+    left: 5px;
+}
+
+.rbc-day-bg span, .rbc-day-bg div {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Corpo do Calendário */
+.rbc-month-view {
+    border: none;
+    box-shadow: none; /* Remove sombras, se aplicável */
+}
+
+/* Linhas horizontais */
+.rbc-month-row + .rbc-month-row {
+    border: none;
+}
+
+/* Linhas verticais */
+.rbc-day-bg + .rbc-day-bg {
+    border-radius: 15px;
+    border: solid 1px #f38ba8;;
+}
+
+/* Marcação dia prox mes */
+.rbc-off-range-bg {
+    background-color: #fafafa;
+}
+
+/* Marcação todos os dias */
+.rbc-day-bg {
+    border-radius: 15px;
+    border: solid 1px #f38ba8;
+    margin: 4px;
+    background-color: #fff; /* Adicione um fundo se necessário para visualizar a borda */
+    box-sizing: border-box; /* Garante que a borda e a margem não afetem o tamanho do elemento */
+}
+
+/* Marcação dia atual */
+.rbc-today {
+    background-color: #f38ba86e;
+    border-radius: 15px;
+}
+
+/* Eventos */
+.rbc-event {
+    background-color: #333;
+    color: #fff;
+    padding: 8px;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.rbc-event:hover {
+    transform: scale(1.05);
+}
+
+/* Agenda */
+
+.rbc-agenda-view {
+    color: #f55381;
+}
+
+.rbc-agenda-date-cell, 
+.rbc-agenda-time-cell {
+    background-color: #f38ba8;
+    color: #fff;
+}
+
+.rbc-agenda-event-cell {
+    border-radius: 12px;
+    background-color: #ffe9ef;
+    font-weight: bold;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.rbc-agenda-event-cell:hover {
+    background-color: #f7b2b2;
+}

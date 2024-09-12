@@ -20,14 +20,17 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "src/app/Components/SideBar/SideBar.Tsx", "src/app/Components/SideBar/SideBar.Tsx"  ],
+    "**/*.tsx",
+    "src/app/Components/SideBar/SideBar.Tsx",
+    "src/app/Components/SideBar/SideBar.Tsx"
+  ],
   "exclude": [
     "node_modules"
   ]
