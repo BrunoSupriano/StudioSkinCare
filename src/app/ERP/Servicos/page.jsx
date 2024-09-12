@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useMemo } from 'react';
 import Sidebar from '../../Components/SideBar/SideBar.jsx';
 import Table from '../../Components/Table/Table.jsx';
-import '../../css/table.css';
+import '../../Components/Table/table.css';
 
 const Servicos = () => {
 
@@ -69,7 +69,6 @@ const Servicos = () => {
                         <button type="submit" className="save">Salvar Serviço</button>
                         <Table columns={columns} data={dataTable} />      
                     </form>
-   
                 </div>
             </div>
         </div>
