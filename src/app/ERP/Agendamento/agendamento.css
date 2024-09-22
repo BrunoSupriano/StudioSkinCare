@@ -2,6 +2,7 @@
 .calendario {
     flex: 1;
     padding: 20px;
+    height: 1000px;
     background-color: #FFFFFF;
     border-radius: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -11,8 +12,6 @@
 .calendariocontainer {
     background-color: #FFE9EF;
     border-radius: 1rem;
-    height: 100vh;
-    width: 80%;
     padding: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     display: flex;

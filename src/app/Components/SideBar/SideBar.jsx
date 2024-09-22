@@ -1,21 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
 import { FaUsers, FaCalendarAlt, FaDollarSign, FaConciergeBell, FaSignOutAlt } from 'react-icons/fa';
-import { BiSolidDashboard } from "react-icons/bi";
 import { usePathname } from 'next/navigation';
 
 const Sidebar = () => {
     const pathname = usePathname();
 
     return (
-        <div className='flex p-2 align-middle'>
-            <div className="bg-rose-300 w-50 h-[calc(100vh-20px)] p-4 rounded-3xl shadow-lg flex flex-col ">
+        <div className='p-2 align-middle'>
+            <div className="bg-rose-300 w-50 h-[calc(100vh-20px)] p-4 rounded-3xl shadow-lg flex">
                 <div className="flex flex-col h-full">
                     <span className="font-bold text-4xl font-sacramento text-black">Daros Glow Care</span>
                     <div className="flex flex-col gap-4 flex-1 justify-center" name="options">
-                        <Link href="/" className={`menu-item ${pathname === '/' ? 'active' : ''}`}>
-                            <BiSolidDashboard className="icon" />
-                            Dashboard
+                        <Link href="/ERP/Agendamento" className={`menu-item ${pathname === '/ERP/Agendamento' ? 'active' : ''}`}>
+                            <FaCalendarAlt className="icon" />
+                            Agenda
                         </Link>
                         <Link href="/ERP/Clientes" className={`menu-item ${pathname === '/ERP/Clientes' ? 'active' : ''}`}>
                             <FaUsers className="icon" />
@@ -24,10 +23,6 @@ const Sidebar = () => {
                         <Link href="/ERP/Servicos" className={`menu-item ${pathname === '/ERP/Servicos' ? 'active' : ''}`}>
                             <FaConciergeBell className="icon" />
                             Serviços
-                        </Link>
-                        <Link href="/ERP/Agendamento" className={`menu-item ${pathname === '/ERP/Agendamento' ? 'active' : ''}`}>
-                            <FaCalendarAlt className="icon" />
-                            Agenda
                         </Link>
                         <Link href="/ERP/Financeiro" className={`menu-item ${pathname === '/ERP/Financeiro' ? 'active' : ''}`}>
                             <FaDollarSign className="icon" />
