@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ServiceForm = ({ handleSubmit, handleChange, formData: formData }) => {
-    // const defaultServico = servico || { nome: '', duracao: '', valor: ''};
 
     return (
         <form onSubmit={handleSubmit}>
@@ -11,11 +10,11 @@ const ServiceForm = ({ handleSubmit, handleChange, formData: formData }) => {
             </div>
             <div>
                 <label className="formlabel">Duração (min):</label>
-                <input type="text" name="duracao" value={formData.duracao} onChange={handleChange} className="Custom-input" placeholder="Digite a duração em minutos" />
+                <input type="number" name="duracao" value={formData.duracao} onChange={handleChange} className="Custom-input" placeholder="Digite a duração em minutos" min="0" />
             </div>
             <div>
                 <label className="formlabel">Valor (R$):</label>
-                <input type="text" name="valor" value={formData.valor} onChange={handleChange} className="Custom-input" placeholder="Digite o valor em reais" />
+                <input type="number" name="valor" value={formData.valor} onChange={handleChange} className="Custom-input" placeholder="Digite o valor em reais" min="0" />
             </div>
         </form>
     );
