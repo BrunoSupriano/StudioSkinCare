@@ -1,76 +1,130 @@
 "use client";
+
 import React, { useState } from 'react';
-import { useMemo } from 'react';
 import Sidebar from '../../Components/SideBar/SideBar.jsx';
-import Table from '../../Components/Table/Table.jsx';
-import '../../Components/Table/table.css';
+import SearchBar from '../../Components/SearchBar/SearchBar.jsx';
+import DataTable from './DataTable.jsx';
+import ServiceForm from './ServiceForm.jsx';
 
 const Servicos = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
+    const [formData, setFormData] = useState({}); 
+    const [isFormDirty, setIsFormDirty] = useState(false); 
 
-    const [cliente, setCliente] = useState({ cpf: '', nome: '', endereco: '', celular: '', aniversario: '' });
+    const openModal = () => {
+        setFormData({ nome: '', duracao: '', valor: '' }); 
+        setIsModalOpen(true);
+    };
 
-    const handleChange = (e) => {
-        setCliente({ ...cliente, [e.target.name]: e.target.value });
+    const closeModal = () => setIsModalOpen(false);
+
+    const openSuccessModal = () => {
+        setIsSuccessModalOpen(true);
+        setTimeout(() => {
+            setIsSuccessModalOpen(false);
+        }, 2000); 
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Lógica para salvar o cliente
-        console.log(cliente);
+        // Lógica de submissão do serviço aqui
+        closeModal(); 
+        openSuccessModal(); 
+    };
+ 
+    const handleCancel = () => {
+        if (isFormDirty) {
+            setIsDiscardModalOpen(true); 
+        } else {
+            closeModal(); 
+        }
     };
 
-        // Definição das colunas e dados da tabela
-        const columns = useMemo(
-            () => [
-                {
-                    Header: 'User ID',
-                    accessor: 'userId',
-                },
-                {
-                    Header: 'Username',
-                    accessor: 'username',
-                },
-                {
-                    Header: 'Role',
-                    accessor: 'role',
-                },
-            ],
-            []
-        );
-    
-        const dataTable = useMemo(
-            () => [
-                { userId: 1, username: 'alice', role: 'Admin' },
-                { userId: 2, username: 'bob', role: 'User' },
-                // Adicione mais dados aqui
-            ],
-            []
-        );
+    const handleDiscard = () => {
+        setIsFormDirty(false); 
+        setIsDiscardModalOpen(false); 
+        closeModal(); 
+    };
+
+    const handleChange = (e) => {
+        setIsFormDirty(true); 
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
     return (
-        <div className='flex min-h-screen'>
+        <div className="flex min-h-screen">
             <Sidebar />
             <div className="flex-1 p-3">
                 <div className="formcontainer">
                     <h1 className="title">Serviços</h1>
-                    <p className="mb-4 text-pink-700">Cadastre ou edite os tipos de serviços oferecidos.</p>
-                    <form className="space-y-4">
-                        <div className="mb-4">
-                            <label htmlFor="nome" className="formlabel">Nome do Serviço:</label>
-                            <input type="text" id="nome" className="Custom-input" placeholder="Digite o nome do serviço" />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="duracao" className="formlabel">Duração (min):</label>
-                            <input type="number" id="duracao" className="Custom-input" placeholder="Digite a duração em minutos" />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="valor" className="formlabel">Valor (R$):</label>
-                            <input type="text" id="valor" className="Custom-input" placeholder="Digite o valor em reais" />
-                        </div>
-                        <button type="submit" className="save">Salvar Serviço</button>
-                        <Table columns={columns} data={dataTable} />      
-                    </form>
+                    <div className="flex items-center justify-between">
+                        <SearchBar placeholder="Pesquisar Serviço..." />
+                        <button 
+                            onClick={openModal} 
+                            className="text-white bg-pink-500 hover:bg-pink-600 rounded px-2 py-1"
+                        >
+                            Novo Serviço
+                        </button>
+                    </div>
+                    <DataTable />
                 </div>
             </div>
+
+            {isModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
+                        <h2 className="text-lg font-semibold mb-4">Cadastrar Serviço</h2>
+                        <ServiceForm handleSubmit={handleSubmit} handleChange={handleChange} formData={formData} />
+                        <div className="flex justify-end mt-4">
+                            <button 
+                                onClick={handleCancel} 
+                                className="text-gray-600 hover:text-gray-800 mr-4"
+                            >
+                                Cancelar
+                            </button>
+                            <button 
+                                onClick={handleSubmit} 
+                                className="text-white bg-pink-500 hover:bg-pink-600 rounded px-4 py-2"
+                            >
+                                Cadastrar Serviço
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {isSuccessModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
+                        <h2 className="text-lg font-semibold text-green-600 mb-4">Serviço cadastrado com sucesso!</h2>
+                    </div>
+                </div>
+            )}
+
+            {isDiscardModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
+                        <h2 className="text-lg font-semibold mb-4">Descartar alterações?</h2>
+                        <p>Tem certeza que deseja descartar os dados preenchidos?</p>
+                        <div className="flex justify-end mt-4">
+                            <button 
+                                onClick={() => setIsDiscardModalOpen(false)} 
+                                className="text-gray-600 hover:text-gray-800 mr-4"
+                            >
+                                Não
+                            </button>
+                            <button 
+                                onClick={handleDiscard} 
+                                className="text-white bg-red-500 hover:bg-red-600 rounded px-4 py-2"
+                            >
+                                Sim, descartar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
