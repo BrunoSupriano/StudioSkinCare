@@ -61,10 +61,10 @@ const Financeiro = () => {
     
         const dataTable = useMemo(
             () => [
-                { id: 1, nome: 'Alice', telefone: '123-456-7890', servico: 'Extensão de cílios', valor: 200.00, situacao: 'Pago', mes: 'january' },
-                { id: 2, nome: 'Maria', telefone: '987-654-3210', servico: 'Limpeza de pele', valor: 150.00, situacao: 'Pendente', mes: 'february' },
-                { id: 3, nome: 'João', telefone: '111-222-3333', servico: 'Lash lifting', valor: 100.00, situacao: 'Pago', mes: 'january' },
-                { id: 4, nome: 'Carla', telefone: '444-555-6666', servico: 'Dermaplaning', valor: 50.00, situacao: 'Pago', mes: 'march' }
+                { id: 1, nome: 'Alice', telefone: '123-456-7890', servico: 'Extensão de cílios', valor: 200.00, situacao: 'Pago', mes: 'Janeiro' },
+                { id: 2, nome: 'Maria', telefone: '987-654-3210', servico: 'Limpeza de pele', valor: 150.00, situacao: 'Pendente', mes: 'Fevereiro' },
+                { id: 3, nome: 'Joana', telefone: '111-222-3333', servico: 'Lash lifting', valor: 100.00, situacao: 'Pago', mes: 'Janeiro' },
+                { id: 4, nome: 'Carla', telefone: '444-555-6666', servico: 'Dermaplaning', valor: 50.00, situacao: 'Pago', mes: 'Março' }
             ],
             []
         );
@@ -90,18 +90,18 @@ const Financeiro = () => {
                                 value={selectedMonth} 
                                 onChange={handleMonthChange} 
                             >
-                            <option value="january">Janeiro</option>
-                            <option value="february">Fevereiro</option>
-                            <option value="march">Março</option>
-                            <option value="april">Abril</option>
-                            <option value="may">Maio</option>
-                            <option value="june">Junho</option>
-                            <option value="july">Julho</option>
-                            <option value="august">Agosto</option>
-                            <option value="september">Setembro</option>
-                            <option value="october">Outubro</option>
-                            <option value="november">Novembro</option>
-                            <option value="december">Dezembro</option>
+                            <option value="Janeiro">Janeiro</option>
+                            <option value="Fevereiro">Fevereiro</option>
+                            <option value="Março">Março</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Maio">Maio</option>
+                            <option value="Junho">Junho</option>
+                            <option value="Julho">Julho</option>
+                            <option value="Agosto">Agosto</option>
+                            <option value="Setembro">Setembro</option>
+                            <option value="Outubro">Outubro</option>
+                            <option value="Novembro">Novembro</option>
+                            <option value="Dezembro">Dezembro</option>
                         </select>
                     </div>
                     <Table className="table" columns={columns}  
