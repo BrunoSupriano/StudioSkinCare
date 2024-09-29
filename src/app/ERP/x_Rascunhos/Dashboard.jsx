@@ -1,10 +1,10 @@
 "use client";
 
-import Sidebar from './Components/SideBar/SideBar.jsx';
+import Sidebar from '../../Components/SideBar/SideBar.jsx';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import DataTable from './Components/Table/Dashboard/DashTable.jsx';
-import SalesChart from './Components/Graphs/SalesChart.jsx';
+import DataTable from '../../Components/Table/Dashboard/DashTable.jsx';
+import SalesChart from '../../Components/Graphs/SalesChart.jsx';
 
 const HomePage = () => {
     return (

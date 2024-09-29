@@ -6,6 +6,7 @@ import Table from '../../Components/Table/Table.jsx';
 import '../../css/table.css';
 import './financeiro.css'
 
+
 const Financeiro = () => {
 
     const [cliente, setCliente] = useState({ cpf: '', nome: '', endereco: '', celular: '', aniversario: '' });

@@ -1,0 +1,89 @@
+/* Fundo geral do calendário */
+.calendar-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2c2c2c; /* Escuro para o fundo */
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    color: #e0e0e0; /* Cor de texto clara */
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilo do cabeçalho do calendário */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    color: #ffb6c1; /* Rosa bebê */
+    font-size: 1.8em;
+}
+
+.header button {
+    background-color: #ffb6c1; /* Rosa bebê */
+    color: #2c2c2c; /* Texto escuro para contraste */
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.header button:hover {
+    background-color: #ff6f91; /* Rosa mais escuro */
+}
+
+/* Estilo dos dias do calendário */
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.day {
+    background-color: #3a3a3a; /* Escuro para as células dos dias */
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.day:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.day span {
+    display: block;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #ffb6c1; /* Rosa bebê */
+}
+
+/* Estilo dos eventos */
+.events {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.events li {
+    background-color: #ffb6c1; /* Rosa bebê */
+    color: #2c2c2c; /* Texto escuro para contraste */
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.events li:hover {
+    background-color: #ff6f91; /* Rosa mais escuro */
+}

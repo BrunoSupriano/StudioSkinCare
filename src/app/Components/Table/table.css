@@ -7,6 +7,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
+    margin-top: 20px; 
 }
 
 .custom-table-header {
@@ -41,3 +42,4 @@
     background-color: #f3f4f6;
     /* Cinza muito claro */
 }
+

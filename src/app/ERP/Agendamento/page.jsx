@@ -1,92 +1,127 @@
 "use client";
-
-// pages/agendamento.js
-import React, { useState } from 'react';
-import { format, addDays } from 'date-fns';
+import React, { useState, useCallback } from 'react';
+import moment from 'moment';
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
+import './agendamento.css';
 import Sidebar from '../../Components/SideBar/SideBar.jsx';
-import DataTable from '../../Components/Table/Dashboard/DashTable.jsx';
+import eventosPadrao from './components/eventosPadrao';
+import EventModal from './components/EventModal';
+import Adicionar from './components/Adicionar';
+import FiltroAtividades from './components/FiltroAtividades.jsx';
 
-const AgendamentoPage = () => {
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const [agendamentos, setAgendamentos] = useState([]);
-    const [newAgendamento, setNewAgendamento] = useState({
-        cliente: '',
-        horario: '',
-        servico: '',
-    });
+const DragAndDropCalendar = withDragAndDrop(Calendar);
+const localizer = momentLocalizer(moment);
 
-    const diasDaSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+function Agendamento() {
+    const [eventos, setEventos] = useState(eventosPadrao);
+    const [eventoSelecionado, SeteventoSelecionado] = useState(null);
+    const [eventosFiltrados, setEventosFiltrados] = useState(eventosPadrao);
 
-    const handleDateChange = (days) => {
-        setSelectedDate(addDays(selectedDate, days));
+    // Estado para gerenciar a visualização do calendário
+    const [view, setView] = useState(Views.MONTH);
+    const [date, setDate] = useState(moment().toDate());
+
+    const moverEventos = (data) => {
+        const { start, end } = data;
+        const updatedEvents = eventos.map((event) => {
+            if (event.id === data.event.id) {
+                return {
+                    ...event,
+                    start: new Date(start),
+                    end: new Date(end),
+                };
+            }
+            return event;
+        });
+        setEventos(updatedEvents);
     };
 
-    const handleAgendar = () => {
-        if (newAgendamento.cliente && newAgendamento.horario && newAgendamento.servico) {
-            setAgendamentos([...agendamentos, { ...newAgendamento, date: selectedDate }]);
-            setNewAgendamento({ cliente: '', horario: '', servico: '' });
-        }
+    const handleEventClick = (evento) => {
+        SeteventoSelecionado(evento);
     };
+
+    const handleEventClose = () => {
+        SeteventoSelecionado(null);
+    };
+
+    const handleAdicionar = (novoEvento) => {
+        setEventos([...eventos, { ...novoEvento, id: eventos.length + 1 }]);
+    };
+
+    const handleEventDelete = (eventId) => {
+        const updatedEvents = eventos.filter((event) => event.id !== eventId);
+        setEventos(updatedEvents);
+        SeteventoSelecionado(null);
+    };
+
+    const handleEventUpdate = (updatedEvent) => {
+        const updatedEvents = eventos.map((event) => {
+            if (event.id === updatedEvent.id) {
+                return updatedEvent;
+            }
+            return event;
+        });
+        setEventos(updatedEvents);
+        SeteventoSelecionado(null);
+    };
+
+    const handleSelecionarAtividades = (atividadesSelecionadas) => {
+        setEventosFiltrados(atividadesSelecionadas);
+    };
+
+    // Função para alternar entre as visualizações
+    const handleOnChangeView = (selectedView) => {
+        setView(selectedView);
+    };
+
+    // Função para navegar pelas datas
+    const onNavigate = useCallback((newDate) => {
+        setDate(newDate);
+    }, []);
+
 
 
     return (
         <div className="flex min-h-screen">
             <Sidebar />
-            <div className="flex-1 p-3">
-                <div className="formcontainer">
-                    <h1 className="title">Agendamento</h1>
-                    <p className="mb-4 text-pink-700">Selecione um mês para visualizar os lucros diários e obter insights financeiros.</p>
-                    <div>
-                        <div className="mb-6">
-                            <div className="mb-4">
-                                <label className="formlabel">Cliente</label>
-                                <input
-                                    type="text"
-                                    value={newAgendamento.cliente}
-                                    onChange={(e) => setNewAgendamento({ ...newAgendamento, cliente: e.target.value })}
-                                    className="Custom-input"
-                                    placeholder='Digite o Nome do cliente'
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="formlabel">Horário</label>
-                                <input
-                                    type="time"
-                                    value={newAgendamento.horario}
-                                    onChange={(e) => setNewAgendamento({ ...newAgendamento, horario: e.target.value })}
-                                    className="Custom-input"
-                                    placeholder='HH:MM'
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="formlabel">Serviço</label>
-                                <input
-                                    type="text"
-                                    value={newAgendamento.servico}
-                                    onChange={(e) => setNewAgendamento({ ...newAgendamento, servico: e.target.value })}
-                                    className="Custom-input"
-                                    placeholder='Digite o Nome do serviço'
-                                />
-                            </div>
-                            <button onClick={handleAgendar} className="save">
-                                Agendar
-                            </button>
-                        </div>
-                        <div className="border border-pink-500 flex justify-between items-center mb-4 bg-white p-6 rounded shadow-md">
-                            <button onClick={() => handleDateChange(-1)} className="Action">
-                                Anterior
-                            </button>
-                            <h2 className="text-xl font-bold">{format(selectedDate, 'dd/MM/yyyy')} ({diasDaSemana[selectedDate.getDay()]})</h2>
-                            <button onClick={() => handleDateChange(1)} className="Action">
-                                Próximo
-                            </button>
-                        </div>
-                            <DataTable />
-                    </div>
+            <div className="calendariocontainer">
+                {/* Mover a toolbar para cima */}
+                <div className="calendario">
+                    <DragAndDropCalendar
+                        defaultDate={date}
+                        date={date}
+                        onNavigate={onNavigate}
+                        view={view}
+                        onView={handleOnChangeView}
+                        events={eventosFiltrados}
+                        localizer={localizer}
+                        resizable
+                        onEventDrop={moverEventos}
+                        onEventResize={moverEventos}
+                        onSelectEvent={handleEventClick}
+                        className="calendar"
+                        toolbar={true} // Desativa a toolbar padrão
+                    />
                 </div>
+                {eventoSelecionado && (
+                    <EventModal
+                        evento={eventoSelecionado}
+                        onClose={handleEventClose}
+                        onDelete={handleEventDelete}
+                        onUpdate={handleEventUpdate}
+                        style={{ display: 'flex' }}
+                    />
+                )}
+            </div>
+            <div>
+            <Adicionar onAdicionar={handleAdicionar} />
+            <FiltroAtividades atividades={eventos} onSelecionarAtividades={handleSelecionarAtividades} />
             </div>
         </div>
     );
-};
+}
 
-export default AgendamentoPage;
+export default Agendamento;
