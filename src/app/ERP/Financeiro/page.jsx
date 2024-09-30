@@ -5,12 +5,12 @@ import Table from '../../Components/Table/Table.jsx';
 import SearchBar from '../../Components/SearchBar/SearchBar.jsx';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import '../../Components/Table/Table.jsx';
+import '../../css/table.css';
+import './financeiro.css'
+
 
 const Financeiro = () => {
     const [cliente, setCliente] = useState({ cpf: '', nome: '', endereco: '', celular: '', aniversario: '' });
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedDate, setSelectedDate] = useState(null);
 
     const handleChange = (e) => {
         setCliente({ ...cliente, [e.target.name]: e.target.value });
@@ -21,24 +21,54 @@ const Financeiro = () => {
         console.log(cliente);
     };
 
-    const columns = useMemo(
-        () => [
-            { Header: 'ID da Receita', accessor: 'id' },
-            { Header: 'Data', accessor: 'data' },
-            { Header: 'Valor', accessor: 'valor' },
-            { Header: 'Cliente', accessor: 'cliente' },
-            { Header: 'Serviço', accessor: 'servico' },
-        ],
-        []
-    );
 
-    const dataTable = useMemo(
-        () => [
-            { id: 1, data: '2024-09-01', valor: 100, cliente: 'Alice', servico: 'Facial' },
-            { id: 2, data: '2024-09-02', valor: 150, cliente: 'Bob', servico: 'Limpeza de Pele' },
-        ],
-        []
-    );
+    const handleMonthChange = (e) => {
+        setSelectedMonth(e.target.value);
+    };
+        
+        const columns = useMemo(
+            () => [
+                {
+                    Header: 'ID',
+                    accessor: 'id',
+                },
+                {
+                    Header: 'Nome',
+                    accessor: 'nome',
+                },
+                {
+                    Header: 'Telefone',
+                    accessor: 'telefone',
+                },
+                {
+                    Header: 'Serviço',
+                    accessor: 'servico',
+                },
+                {
+                    Header: 'Valor',
+                    accessor: 'valor',
+                },
+                {
+                    Header: 'Situação',
+                    accessor: 'situacao',
+                },
+                {
+                    Header: 'Mês', 
+                    accessor: 'mes',
+                },
+            ],
+            []
+        );
+    
+        const dataTable = useMemo(
+            () => [
+                { id: 1, nome: 'Alice', telefone: '123-456-7890', servico: 'Extensão de cílios', valor: 200.00, situacao: 'Pago', mes: 'Janeiro' },
+                { id: 2, nome: 'Maria', telefone: '987-654-3210', servico: 'Limpeza de pele', valor: 150.00, situacao: 'Pendente', mes: 'Fevereiro' },
+                { id: 3, nome: 'Joana', telefone: '111-222-3333', servico: 'Lash lifting', valor: 100.00, situacao: 'Pago', mes: 'Janeiro' },
+                { id: 4, nome: 'Carla', telefone: '444-555-6666', servico: 'Dermaplaning', valor: 50.00, situacao: 'Pago', mes: 'Março' }
+            ],
+            []
+        );
 
     const clearDateFilter = () => {
         setSelectedDate(null);
@@ -61,6 +91,11 @@ const Financeiro = () => {
         );
     });
 
+
+        const filteredData = dataTable.filter(item => item.mes === selectedMonth);
+
+        const totalValue = filteredData.reduce((total, item) => total + item.valor, 0);
+
     return (
         <div className='flex min-h-screen'>
             <Sidebar />
@@ -68,27 +103,36 @@ const Financeiro = () => {
                 <div className="formcontainer">
                     <h1 className="title">Financeiro</h1>
                     <div className='space-y-4'>
-                        <div className="flex items-center justify-between mb-4">
-                            <SearchBar placeholder="Pesquisar Receita..." setSearchTerm={setSearchTerm} />
-                            <div className="flex items-center justify-end w-full"> {/* Alinhando à direita */}
-                                <DatePicker
-                                    selected={selectedDate}
-                                    onChange={date => setSelectedDate(date)}
-                                    dateFormat="MM/yyyy"
-                                    showMonthYearPicker
-                                    className="border-2 border-pink-500 rounded-lg py-2 px-4 text-pink-800"
-                                    placeholderText="Selecione o Mês"
-                                />
-                                <button
-                                    onClick={clearDateFilter}
-                                    className="text-white bg-pink-500 hover:bg-pink-600 ml-2 rounded px-2 py-1"
-                                >
-                                    Limpar Filtro
-                                </button>
-                            </div>
-                        </div>
-                        <Table columns={columns} data={filteredData} />
+                    <div className="bg-white p-6 rounded shadow-md">
+                        <label htmlFor="month" className="block text-pink-800 mb-2 font-semibold">Selecione o Mês:</label>
+                            <select 
+                                id="month" 
+                                className="bg-pink-100 text-pink-800 py-2 px-4 rounded"
+                                value={selectedMonth} 
+                                onChange={handleMonthChange} 
+                            >
+                            <option value="Janeiro">Janeiro</option>
+                            <option value="Fevereiro">Fevereiro</option>
+                            <option value="Março">Março</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Maio">Maio</option>
+                            <option value="Junho">Junho</option>
+                            <option value="Julho">Julho</option>
+                            <option value="Agosto">Agosto</option>
+                            <option value="Setembro">Setembro</option>
+                            <option value="Outubro">Outubro</option>
+                            <option value="Novembro">Novembro</option>
+                            <option value="Dezembro">Dezembro</option>
+                        </select>
                     </div>
+                    <Table className="table" columns={columns}  
+                    data={filteredData}/>
+
+                    <div>
+                        <p className='background-gray'>Valor total: R$ {totalValue.toFixed(2)}</p>
+                    </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
