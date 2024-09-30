@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useCallback } from 'react';
 import moment from 'moment';
+import 'moment/locale/pt-br'; // Importa a localização
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -12,7 +13,12 @@ import EventModal from './components/EventModal';
 import Adicionar from './components/Adicionar';
 import FiltroAtividades from './components/FiltroAtividades.jsx';
 
+
+
 const DragAndDropCalendar = withDragAndDrop(Calendar);
+
+moment.locale('pt-br'); // Define a localidade para pt-br
+
 const localizer = momentLocalizer(moment);
 
 function Agendamento() {
@@ -82,7 +88,20 @@ function Agendamento() {
         setDate(newDate);
     }, []);
 
-
+    const messages = {
+        today: 'Hoje',
+        previous: 'Voltar',
+        next: 'Próximo',
+        month: 'Mês',
+        week: 'Semana',
+        day: 'Dia',
+        agenda: 'Eventos',
+        date: 'Data',
+        time: 'Hora',
+        event: 'Evento',
+        noEventsInRange: 'Nenhum evento neste período',
+        showMore: total => `+ Ver mais (${total})`
+    };
 
     return (
         <div className="flex min-h-screen">
@@ -103,7 +122,8 @@ function Agendamento() {
                         onEventResize={moverEventos}
                         onSelectEvent={handleEventClick}
                         className="calendar"
-                        toolbar={true} // Desativa a toolbar padrão
+                        toolbar={true}
+                        messages={messages} // Adicione as mensagens aqui
                     />
                 </div>
                 {eventoSelecionado && (
@@ -117,8 +137,8 @@ function Agendamento() {
                 )}
             </div>
             <div>
-            <Adicionar onAdicionar={handleAdicionar} />
-            <FiltroAtividades atividades={eventos} onSelecionarAtividades={handleSelecionarAtividades} />
+                <Adicionar onAdicionar={handleAdicionar} />
+                <FiltroAtividades atividades={eventos} onSelecionarAtividades={handleSelecionarAtividades} />
             </div>
         </div>
     );

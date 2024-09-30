@@ -83,6 +83,7 @@ button.Action {
     max-width: 100%;
     max-height: 100vh;
     overflow-y: auto;
+    height: 100%;
 }
 
 .formlabel {
