@@ -2,16 +2,17 @@
 
 import "../../globals.css";
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const router = useRouter();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Adicione a lógica de autenticação aqui
-        console.log('Email:', email);
-        console.log('Password:', password);
+        // Redireciona para a rota desejada
+        router.push('/ERP/Agendamento');
     };
 
     return (
@@ -27,7 +28,6 @@ const Login = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full p-2 text-lg border border-pink-300 rounded-md"
-                            required
                         />
                     </div>
                     <div className="mb-4">
@@ -38,7 +38,6 @@ const Login = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full p-2 text-lg border border-pink-300 rounded-md"
-                            required
                         />
                     </div>
                     <button type="submit" className="w-full py-2 text-lg text-white bg-pink-500 rounded-md cursor-pointer transition-colors duration-300 hover:bg-pink-600">

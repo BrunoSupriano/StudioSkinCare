@@ -30,7 +30,7 @@ const Sidebar = () => {
                         </Link>
                     </div>
                     <div className="mt-auto flex flex-col items-center justify-center gap-10">
-                        <Link rel="stylesheet" href="/">
+                        <Link rel="stylesheet" href="/auth/login">
                             <button className="Action">
                                 <FaSignOutAlt className="text-2xl" />
                                 Logout

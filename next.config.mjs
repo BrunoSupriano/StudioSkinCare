@@ -4,7 +4,7 @@ const nextConfig = {
         return [
             {
                 source: '/',
-                destination: '/ERP/Agendamento',  // Define a nova "home"
+                destination: '/auth/login',
                 permanent: true,
             },
         ]
