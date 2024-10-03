@@ -85,6 +85,20 @@ function Agendamento() {
         setDate(newDate);
     }, []);
 
+    const messages = {
+        today: 'Hoje',
+        previous: 'Voltar',
+        next: 'Próximo',
+        month: 'Mês',
+        week: 'Semana',
+        day: 'Dia',
+        agenda: 'Eventos',
+        date: 'Data',
+        time: 'Hora',
+        event: 'Evento',
+        noEventsInRange: 'Nenhum evento neste período',
+        showMore: total => `+ Ver mais (${total})`
+    };
 
 
     return (
@@ -107,6 +121,7 @@ function Agendamento() {
                         onSelectEvent={handleEventClick}
                         className="calendar"
                         toolbar={true} // Desativa a toolbar padrão
+                        messages={messages} // Adicione 'as mensagens aqui
                     />
                 </div>
                 {eventoSelecionado && (
