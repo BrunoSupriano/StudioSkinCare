@@ -11,6 +11,7 @@ import eventosPadrao from './components/eventosPadrao';
 import EventModal from './components/EventModal';
 import Adicionar from './components/Adicionar';
 import FiltroAtividades from './components/FiltroAtividades.jsx';
+import 'moment/locale/pt-br';
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 const localizer = momentLocalizer(moment);
@@ -19,6 +20,8 @@ function Agendamento() {
     const [eventos, setEventos] = useState(eventosPadrao);
     const [eventoSelecionado, SeteventoSelecionado] = useState(null);
     const [eventosFiltrados, setEventosFiltrados] = useState(eventosPadrao);
+
+    moment.locale('pt-br')
 
     // Estado para gerenciar a visualização do calendário
     const [view, setView] = useState(Views.MONTH);
