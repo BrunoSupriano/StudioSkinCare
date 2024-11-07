@@ -7,52 +7,74 @@ import DataTable from './DataTable.jsx';
 import ClienteForm from './ClientForm'; // Certifique-se de que o caminho está correto
 
 const Clientes = () => {
-    // Estado para controlar a visibilidade do modal de cadastro e outros
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
-    const [formData, setFormData] = useState({}); // Armazena os dados do formulário
-    const [isFormDirty, setIsFormDirty] = useState(false); // Indica se o formulário foi alterado
+    const [isFormDirty, setIsFormDirty] = useState(false);
 
-    // Funções para abrir e fechar os modais
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    // Abrir o modal de sucesso temporariamente
+    const [formData, setFormData] = useState({
+        nome: '',
+        celular: '',
+        endereco: '',
+        cpf: '',
+        aniversario: ''
+    });
+
     const openSuccessModal = () => {
         setIsSuccessModalOpen(true);
+        closeModal(); // Fecha o modal de cadastro aqui
         setTimeout(() => {
             setIsSuccessModalOpen(false);
-        }, 2000); // Modal de sucesso será fechado após 2 segundos
+        }, 2000);
     };
 
-    // Função para lidar com o submit do formulário
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Lógica de submissão do cliente aqui
-        closeModal(); // Fecha o modal de cadastro
-        openSuccessModal(); // Exibe o modal de sucesso
-    };
-
-    // Função para abrir o modal de descarte ao cancelar
-    const handleCancel = () => {
-        if (isFormDirty) {
-            setIsDiscardModalOpen(true); // Abre o modal de confirmação de descarte
-        } else {
-            closeModal(); // Fecha o modal normalmente
+        console.log(formData);
+        try {
+            const response = await fetch('http://localhost:8080/cliente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            if (response.ok) {
+                openSuccessModal();
+                setFormData({
+                    nome: '',
+                    celular: '',
+                    endereco: '',
+                    cpf: '',
+                    aniversario: ''
+                });
+            } else {
+                console.error("Erro ao adicionar cliente");
+            }
+        } catch (error) {
+            console.error("Erro ao enviar os dados:", error);
         }
     };
 
-    // Função para lidar com a confirmação de descarte do formulário
-    const handleDiscard = () => {
-        setIsFormDirty(false); // Reseta o estado do formulário
-        setIsDiscardModalOpen(false); // Fecha o modal de confirmação de descarte
-        closeModal(); // Fecha o modal de cadastro
+    const handleCancel = () => {
+        if (isFormDirty) {
+            setIsDiscardModalOpen(true);
+        } else {
+            closeModal();
+        }
     };
 
-    // Função para lidar com mudanças no formulário
+    const handleDiscard = () => {
+        setIsFormDirty(false);
+        setIsDiscardModalOpen(false);
+        closeModal();
+    };
+
     const handleChange = (e) => {
-        setIsFormDirty(true); // Marca o formulário como alterado
+        setIsFormDirty(true);
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
@@ -80,7 +102,7 @@ const Clientes = () => {
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
                         <h2 className="text-lg font-semibold mb-4">Cadastrar Cliente</h2>
-                        <ClienteForm handleSubmit={handleSubmit} handleChange={handleChange} />
+                        <ClienteForm handleSubmit={handleSubmit} handleChange={handleChange} formData={formData} />
                         <div className="flex justify-end mt-4">
                             <button 
                                 onClick={handleCancel} 
@@ -89,7 +111,8 @@ const Clientes = () => {
                                 Cancelar
                             </button>
                             <button 
-                                onClick={handleSubmit} 
+                                type="button"
+                                onClick={handleSubmit}
                                 className="text-white bg-pink-500 hover:bg-pink-600 rounded px-4 py-2"
                             >
                                 Cadastrar Cliente
