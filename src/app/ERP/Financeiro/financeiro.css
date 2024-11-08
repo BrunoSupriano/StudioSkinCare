@@ -3,8 +3,10 @@
 }
 
 .background-gray {
-    background-color: #C7C7C8;
-    border: black solid 1px;
+    background-color: #F582A2;
+    border: white solid 1px;
     font-weight: 500;
     padding: 10px;
+    border-radius: 0.5rem;
+
 }
