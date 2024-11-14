@@ -1,0 +1,43 @@
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.custom-table-header {
+    background-color: #f55381;
+    color: #ffffff;
+}
+
+.custom-table-header-cell {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #d1d5db;
+    font-weight: 600;
+}
+
+.custom-table-row-even {
+    background-color: #ffffff;
+}
+
+.custom-table-row-odd {
+    background-color: #f9fafb;
+}
+
+/* Estilo das células da tabela */
+.custom-table-cell {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #d1d5db;
+    color: #374151;
+}
+
+/* Efeito de hover sobre as células */
+.custom-table-cell:hover {
+    background-color: #f3f4f6;
+    /* Cinza muito claro */
+}
