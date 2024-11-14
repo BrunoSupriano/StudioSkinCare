@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Table from '../../Components/Table/Table.jsx';
 import ServiceForm from './ServiceForm.jsx';  
 
@@ -7,6 +7,14 @@ const DataTable = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:8080/servicos')
+            .then(response => response.json())
+            .then(data => setData(data))
+            .catch(error => console.error('Error fetching data:', error));
+    }, []);
 
     const openEditModal = (servico) => {
         setSelectedServico(servico);
@@ -56,7 +64,7 @@ const DataTable = () => {
     const columns = useMemo(
         () => [
             { Header: 'Nome', accessor: 'nome' },
-            { Header: 'Duração (min)', accessor: 'duracao' },
+            { Header: 'Duração', accessor: 'duracao' },
             { Header: 'Valor (R$)', accessor: 'valor' },
             {
                 Header: 'Ações',
@@ -69,22 +77,6 @@ const DataTable = () => {
                         Editar
                     </button>
                 ),
-            },
-        ],
-        []
-    );
-
-    const data = useMemo(
-        () => [
-            {
-                nome: 'Limpeza de pele',
-                duracao: '45',
-                valor: '100,00',
-            },
-            {
-                nome: 'Extensão de cílios',
-                duracao: '120',
-                valor: '250,00 ',
             },
         ],
         []

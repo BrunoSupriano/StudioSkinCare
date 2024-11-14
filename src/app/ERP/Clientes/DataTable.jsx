@@ -35,7 +35,7 @@ const DataTable = () => {
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/clientes/${selectedCliente.id_cliente}`, {
+            const response = await fetch(`http://localhost:8080/cliente/${selectedCliente.id_cliente}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
