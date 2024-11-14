@@ -1,8 +1,8 @@
 package com.example.dgc.Clientes;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ClientService {
@@ -21,10 +21,10 @@ public class ClientService {
         ClientModel clienteExistente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
         clienteExistente.setNome(cliente.getNome());
-        clienteExistente.setCelular(cliente.getCelular());
+        clienteExistente.setTelefone(cliente.getTelefone());
         clienteExistente.setEndereco(cliente.getEndereco());
         clienteExistente.setCpf(cliente.getCpf());
-        clienteExistente.setAniversario(cliente.getAniversario());
+        clienteExistente.setNascimento(cliente.getNascimento());
         return clienteRepository.save(clienteExistente);
     }
 

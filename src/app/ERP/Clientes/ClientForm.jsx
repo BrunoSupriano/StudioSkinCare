@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ClienteForm = ({ handleSubmit, handleChange, formData = {} }) => { // Adiciona um valor padrão para formData
+const ClienteForm = ({ handleSubmit, handleChange, formData = {} }) => {
     return (
         <form onSubmit={handleSubmit}>
             <div>
@@ -8,21 +8,21 @@ const ClienteForm = ({ handleSubmit, handleChange, formData = {} }) => { // Adic
                 <input
                     type="text"
                     name="nome"
-                    value={formData.nome || ''} // Agora formData sempre será um objeto
+                    value={formData.nome || ''}
                     onChange={handleChange}
                     className="Custom-input"
                     placeholder="Digite o nome"
                 />
             </div>
             <div>
-                <label className="formlabel">Celular</label>
+                <label className="formlabel">Telefone</label>
                 <input
                     type="text"
-                    name="celular"
-                    value={formData.celular || ''}
+                    name="telefone"
+                    value={formData.telefone || ''}
                     onChange={handleChange}
                     className="Custom-input"
-                    placeholder="Digite o celular"
+                    placeholder="Digite o telefone"
                 />
             </div>
             <div>
@@ -48,11 +48,22 @@ const ClienteForm = ({ handleSubmit, handleChange, formData = {} }) => { // Adic
                 />
             </div>
             <div>
-                <label className="formlabel">Aniversário</label>
+                <label className="formlabel">Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    value={formData.email || ''}
+                    onChange={handleChange}
+                    className="Custom-input"
+                    placeholder="Digite o email"
+                />
+            </div>
+            <div>
+                <label className="formlabel">Nascimento</label>
                 <input
                     type="date"
-                    name="aniversario"
-                    value={formData.aniversario || ''}
+                    name="nascimento"
+                    value={formData.nascimento || ''}
                     onChange={handleChange}
                     className="Custom-input"
                 />

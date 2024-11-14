@@ -17,10 +17,11 @@ const Clientes = () => {
 
     const [formData, setFormData] = useState({
         nome: '',
-        celular: '',
+        telefone: '',
         endereco: '',
         cpf: '',
-        aniversario: ''
+        email: '',
+        nascimento: ''
     });
 
     const openSuccessModal = () => {
@@ -46,10 +47,11 @@ const Clientes = () => {
                 openSuccessModal();
                 setFormData({
                     nome: '',
-                    celular: '',
+                    telefone: '',
                     endereco: '',
                     cpf: '',
-                    aniversario: ''
+                    email: '',
+                    nascimento: ''
                 });
             } else {
                 console.error("Erro ao adicionar cliente");
