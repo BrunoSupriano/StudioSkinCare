@@ -6,13 +6,33 @@ import { useRouter } from 'next/navigation';
 
 const Login = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [senha, setSenha] = useState('');
+    const [errorMessage, setErrorMessage] = useState(null); 
     const router = useRouter();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Redireciona para a rota desejada
-        router.push('/ERP/Agendamento');
+
+        
+        try {
+            const response = await fetch("http://localhost:8080/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, senha: senha }), 
+            });
+
+            if (response.ok) {
+                router.push('/ERP/Agendamento');
+            } else {
+                const errorData = await response.json();
+                setErrorMessage(errorData.message || "Erro ao fazer login. Verifique suas credenciais.");
+            }
+        } catch (error) {
+            setErrorMessage("Erro de conexão com o servidor.");
+            console.error("Erro:", error);
+        }
     };
 
     return (
@@ -35,11 +55,12 @@ const Login = () => {
                         <input
                             type="password"
                             id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
                             className="w-full p-2 text-lg border border-pink-300 rounded-md"
                         />
                     </div>
+                    {errorMessage && <p className="mb-4 text-sm text-red-500">{errorMessage}</p>}
                     <button type="submit" className="w-full py-2 text-lg text-white bg-pink-500 rounded-md cursor-pointer transition-colors duration-300 hover:bg-pink-600">
                         Entrar
                     </button>

@@ -65,5 +65,5 @@ public class ClientModel {
     private String cpf;
     private LocalDate aniversario;
 
-    // Getters e Setters
+
 }
