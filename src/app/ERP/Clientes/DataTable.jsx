@@ -35,7 +35,7 @@ const DataTable = () => {
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/clientes/${selectedCliente.id}`, {
+            const response = await fetch(`http://localhost:8080/clientes/${selectedCliente.id_cliente}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ const DataTable = () => {
                 const updatedCliente = await response.json();
                 setClientes((prevClientes) =>
                     prevClientes.map((cliente) =>
-                        cliente.id === updatedCliente.id ? updatedCliente : cliente
+                        cliente.id_cliente === updatedCliente.id_cliente ? updatedCliente : cliente
                     )
                 );
                 closeEditModal();
@@ -61,12 +61,12 @@ const DataTable = () => {
     // Função para deletar cliente
     const confirmDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/cliente/${selectedCliente.id}`, {
+            const response = await fetch(`http://localhost:8080/cliente/${selectedCliente.id_cliente}`, {
                 method: 'DELETE',
             });
             if (response.ok) {
                 setClientes((prevClientes) =>
-                    prevClientes.filter((cliente) => cliente.id !== selectedCliente.id)
+                    prevClientes.filter((cliente) => cliente.id_cliente !== selectedCliente.id_cliente)
                 );
                 closeEditModal();
             } else {
@@ -80,10 +80,11 @@ const DataTable = () => {
     const columns = useMemo(
         () => [
             { Header: 'Nome', accessor: 'nome' },
-            { Header: 'Celular', accessor: 'celular' },
+            { Header: 'Telefone', accessor: 'telefone' },
             { Header: 'Endereço', accessor: 'endereco' },
             { Header: 'CPF', accessor: 'cpf' },
-            { Header: 'Aniversário', accessor: 'aniversario' },
+            { Header: 'Email', accessor: 'email' },
+            { Header: 'Nascimento', accessor: 'nascimento' },
             {
                 Header: 'Ações',
                 accessor: 'acoes',
