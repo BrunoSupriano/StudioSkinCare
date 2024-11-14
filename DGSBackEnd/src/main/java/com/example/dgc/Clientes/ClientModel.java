@@ -1,7 +1,12 @@
 package com.example.dgc.Clientes;
-import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "cliente")
@@ -9,8 +14,26 @@ public class ClientModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_cliente")
     private Long id;
+    
+    @Column(name = "nome")
     private String nome;
+    
+    @Column(name = "telefone")
+    private String telefone;
+    
+    @Column(name = "cpf")
+    private String cpf;
+    
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "nascimento")
+    private LocalDate nascimento;
+    
+    @Column(name = "endereco")
+    private String endereco;
 
     public Long getId() {
         return id;
@@ -28,20 +51,12 @@ public class ClientModel {
         this.nome = nome;
     }
 
-    public String getCelular() {
-        return celular;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setCelular(String celular) {
-        this.celular = celular;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public String getCpf() {
@@ -52,18 +67,27 @@ public class ClientModel {
         this.cpf = cpf;
     }
 
-    public LocalDate getAniversario() {
-        return aniversario;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAniversario(LocalDate aniversario) {
-        this.aniversario = aniversario;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    private String celular;
-    private String endereco;
-    private String cpf;
-    private LocalDate aniversario;
+    public LocalDate getNascimento() {
+        return nascimento;
+    }
 
+    public void setNascimento(LocalDate nascimento) {
+        this.nascimento = nascimento;
+    }
 
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
 }
