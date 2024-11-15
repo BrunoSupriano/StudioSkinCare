@@ -9,10 +9,11 @@ const Login = () => {
     const [senha, setSenha] = useState('');
     const [errorMessage, setErrorMessage] = useState(null); 
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false); // Estado de carregamento
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setIsLoading(true); // Ativa o estado de carregamento
         
         try {
             const response = await fetch("http://localhost:8080/login", {
@@ -20,9 +21,8 @@ const Login = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, senha: senha }), 
+                body: JSON.stringify({ email, senha }),
             });
-
             if (response.ok) {
                 router.push('/ERP/Agendamento');
             } else {
@@ -31,7 +31,8 @@ const Login = () => {
             }
         } catch (error) {
             setErrorMessage("Erro de conexão com o servidor.");
-            console.error("Erro:", error);
+        } finally {
+            setIsLoading(false); // Desativa o estado de carregamento
         }
     };
 
@@ -48,6 +49,7 @@ const Login = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full p-2 text-lg border border-pink-300 rounded-md"
+                            required
                         />
                     </div>
                     <div className="mb-4">
@@ -58,6 +60,7 @@ const Login = () => {
                             value={senha}
                             onChange={(e) => setSenha(e.target.value)}
                             className="w-full p-2 text-lg border border-pink-300 rounded-md"
+                            required
                         />
                     </div>
                     {errorMessage && <p className="mb-4 text-sm text-red-500">{errorMessage}</p>}
