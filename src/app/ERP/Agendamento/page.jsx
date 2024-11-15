@@ -4,7 +4,6 @@ import moment from 'moment';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import './agendamento.css';
 import Sidebar from '../../Components/SideBar/SideBar.jsx';
 import eventosPadrao from './components/eventosPadrao';

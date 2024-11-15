@@ -1,6 +1,5 @@
-
 .calendario {
-    flex: 1;
+    display: flex;
     padding: 20px;
     height: 1000px;
     background-color: #FFFFFF;
@@ -126,10 +125,6 @@
     left: 5px;
 }
 
-.rbc-day-bg span, .rbc-day-bg div {
-    display: block;
-    margin: 0 auto;
-}
 
 /* Corpo do Calendário */
 .rbc-month-view {

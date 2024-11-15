@@ -81,7 +81,7 @@ const Clientes = () => {
     };
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex max-h-screen">
             <Sidebar />
             <div className="flex-1 p-3">
                 <div className="formcontainer">

@@ -1,24 +1,30 @@
-
 .custom-table {
     width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #e5e7eb;
     background-color: #ffffff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-top: 20px; 
+}
+
+.table-container {
+    margin-top: 1%;
+    max-height: 77vh;    /* Tamanho fixo para o corpo da tabela */
+    display: block;       /* Garante que a rolagem funcione corretamente */
+    border-radius: 8px;   /* Aplica o border-radius ao contêiner da tabela */
+    border: 1px solid #e5e7eb; /* Adiciona a borda ao contêiner */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra na tabela */
+    overflow: auto;
 }
 
 .custom-table-header {
     background-color: #f55381;
     color: #ffffff;
+    position: sticky;     /* Torna o cabeçalho fixo */
+    top: 0;               /* Fixa no topo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra no cabeçalho */
 }
 
 .custom-table-header-cell {
     padding: 1rem 1.5rem;
     text-align: left;
-    border-bottom: 1px solid #d1d5db;
     font-weight: 600;
 }
 
@@ -30,16 +36,12 @@
     background-color: #f9fafb;
 }
 
-/* Estilo das células da tabela */
 .custom-table-cell {
     padding: 1rem 1.5rem;
     border-bottom: 1px solid #d1d5db;
     color: #374151;
 }
 
-/* Efeito de hover sobre as células */
 .custom-table-cell:hover {
     background-color: #f3f4f6;
-    /* Cinza muito claro */
 }
-
