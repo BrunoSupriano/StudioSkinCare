@@ -6,18 +6,23 @@ const DataTable = () => {
     const [clientes, setClientes] = useState([]);
     const [selectedCliente, setSelectedCliente] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isFormDirty, setIsFormDirty] = useState(false);
 
     // Buscar dados da API ao carregar o componente
     useEffect(() => {
         const fetchClientes = async () => {
             try {
                 const response = await fetch('http://localhost:8080/cliente');
+                if (!response.ok) {
+                    throw new Error(`Erro na requisição: ${response.status}`);
+                }
                 const data = await response.json();
                 setClientes(data);
             } catch (error) {
                 console.error("Erro ao buscar clientes:", error);
             }
         };
+
         fetchClientes();
     }, []);
 
@@ -29,6 +34,15 @@ const DataTable = () => {
     const closeEditModal = () => {
         setIsEditModalOpen(false);
         setSelectedCliente(null);
+    };
+
+    const handleCancel = () => {
+        if (isFormDirty) {
+            // Se necessário, implemente a lógica para descartar alterações
+            console.log("Alterações descartadas.");
+        } else {
+            closeEditModal();
+        }
     };
 
     // Função para enviar dados editados para a API
@@ -108,17 +122,26 @@ const DataTable = () => {
             {isEditModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
-                        <h2 className="text-lg font-semibold mb-4">Editar Cliente</h2>
+                        <h2 className="title text-center">Editar Cliente</h2>
                         <ClienteForm
                             handleSubmit={handleEditSubmit}
-                            handleChange={(e) => setSelectedCliente({
-                                ...selectedCliente,
-                                [e.target.name]: e.target.value,
-                            })}
+                            handleChange={(e) =>
+                                setSelectedCliente({
+                                    ...selectedCliente,
+                                    [e.target.name]: e.target.value,
+                                })
+                            }
                             cliente={selectedCliente}
                         />
                         {/* Botões para editar e excluir */}
-                        <button onClick={confirmDelete} className="text-red-600 hover:text-red-800">Excluir</button>
+                        <div className="flex justify-between mt-4">
+                            <button onClick={confirmDelete} className="Action">
+                                Excluir
+                            </button>
+                            <button onClick={handleCancel} className="Action">
+                                Cancelar
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
