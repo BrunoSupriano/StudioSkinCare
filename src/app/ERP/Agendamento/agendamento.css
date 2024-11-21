@@ -9,14 +9,23 @@
 }
 
 .calendario {
-    display: flex;
-    padding: 20px;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    padding: 10px;
     width: 100%; /* Ocupa toda a largura da tela */
     height: calc(100vh - 45px);
     background-color: #FFFFFF;
     border-radius: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: auto;
+}
+.formfilter {
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 1rem;
+    border: 1px solid #f55381; /* Adiciona uma borda preta */
 }
 
 
@@ -76,14 +85,11 @@
 .rbc-toolbar {
     background-color: #fff;
     padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     color: #333;
     border-bottom: 2px solid #f55381;
     font-size: 20px;
     font-weight: bold;
-    width: calc(160vh - 5px);/* Ajuste a largura do CALENDARIO */
+
 }
 
 

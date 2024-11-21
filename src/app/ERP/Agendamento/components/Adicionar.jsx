@@ -43,7 +43,7 @@ function Adicionar({onAdicionar}){
 
 
     return(
-        <div className="formcontainer">
+        <div className="formfilter">
             <h3 className="title-h3">Adicionar Evento</h3>
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId='formBasicTitle'>
