@@ -1,0 +1,41 @@
+/* Estilo global para a barra de rolagem */
+::-webkit-scrollbar {
+    width: 12px; /* Largura da barra de rolagem vertical */
+    height: 12px; /* Altura da barra de rolagem horizontal */
+}
+
+/* Estilo do fundo da barra de rolagem */
+::-webkit-scrollbar-track {
+    background: #ffe6eb; /* Rosa claro para o fundo da barra */
+    border-radius: 10px; /* Borda arredondada */
+}
+
+/* Estilo do "polegar" da barra de rolagem */
+::-webkit-scrollbar-thumb {
+    background: white; /* Cor padrão rosa */
+    border-radius: 10px; /* Borda arredondada */
+    border: 2px solid #ffe6eb; /* Borda clara */
+}
+
+/* Estilo do "polegar" da barra de rolagem ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+    background: #d9466a; /* Um tom mais escuro para destacar ao passar o mouse */
+}
+
+/* Personalizando a barra de rolagem para elementos específicos */
+.custom-scrollbar ::-webkit-scrollbar {
+    width: 10px;
+}
+
+.custom-scrollbar ::-webkit-scrollbar-thumb {
+    background: #f55381;
+    border-radius: 10px;
+    border: 2px solid #ffe6eb;
+}
+
+.custom-scrollbar ::-webkit-scrollbar-track {
+    background: #ffe6eb;
+}
+
+
+

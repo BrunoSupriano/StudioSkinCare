@@ -1,20 +1,40 @@
 import React from 'react';
 
-const ServiceForm = ({ handleSubmit, handleChange, formData: formData }) => {
-
+const ServiceForm = ({ handleSubmit, handleChange, servico }) => {
     return (
         <form onSubmit={handleSubmit}>
-            <div>
+            <div style={{ marginBottom: '1rem' }}>
                 <label className="formlabel">Nome do serviço:</label>
-                <input type="text" name="nome" value={formData.nome} onChange={handleChange} className="Custom-input" placeholder="Digite o nome do serviço" />
+                <input
+                    type="text"
+                    name="nome"
+                    value={servico?.nome || ''} // Exibe o nome existente ou vazio
+                    onChange={handleChange}
+                    className="Custom-input"
+                    placeholder="Digite o nome do serviço"
+                />
             </div>
-            <div>
-                <label className="formlabel">Duração (min):</label>
-                <input type="number" name="duracao" value={formData.duracao} onChange={handleChange} className="Custom-input" placeholder="Digite a duração em minutos" min="0" />
-            </div>
-            <div>
+            <div style={{ marginBottom: '1rem' }}>
                 <label className="formlabel">Valor (R$):</label>
-                <input type="number" name="valor" value={formData.valor} onChange={handleChange} className="Custom-input" placeholder="Digite o valor em reais" min="0" />
+                <input
+                    type="number"
+                    name="valor"
+                    value={servico?.valor || ''} // Exibe o valor existente ou vazio
+                    onChange={handleChange}
+                    className="Custom-input"
+                    placeholder="Digite o valor em reais"
+                    step="0.01"
+                />
+            </div>
+            <div style={{ marginBottom: '1rem' }}>
+                <label className="formlabel">Duração (hh:mm):</label>
+                <input
+                    type="time"
+                    name="duracao"
+                    value={servico?.duracao || ''} // Exibe a duração existente ou vazio
+                    onChange={handleChange}
+                    className="Custom-input"
+                />
             </div>
         </form>
     );

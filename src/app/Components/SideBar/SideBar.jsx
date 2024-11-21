@@ -2,6 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { FaUsers, FaCalendarAlt, FaDollarSign, FaConciergeBell, FaSignOutAlt } from 'react-icons/fa';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import logo from '../../assets/LOGO.png';
 
 const Sidebar = () => {
     const pathname = usePathname();
@@ -10,7 +12,7 @@ const Sidebar = () => {
         <div className='p-2 align-middle'>
             <div className="bg-rose-300 w-50 h-[calc(100vh-20px)] p-4 rounded-3xl shadow-lg flex">
                 <div className="flex flex-col h-full">
-                    <span className="font-bold text-4xl font-sacramento text-black">Daros Glow Care</span>
+                    <Image src={logo} alt="Logo da empresa" width={200} height={100} className="rounded-full p-2" style={{ backgroundColor: '#f55381' }} />
                     <div className="flex flex-col gap-4 flex-1 justify-center" name="options">
                         <Link href="/ERP/Agendamento" className={`menu-item ${pathname === '/ERP/Agendamento' ? 'active' : ''}`}>
                             <FaCalendarAlt className="icon" />

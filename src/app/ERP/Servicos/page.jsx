@@ -10,11 +10,11 @@ const Servicos = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
-    const [formData, setFormData] = useState({}); 
-    const [isFormDirty, setIsFormDirty] = useState(false); 
+    const [formData, setFormData] = useState({});
+    const [isFormDirty, setIsFormDirty] = useState(false);
 
     const openModal = () => {
-        setFormData({ nome: '', duracao: '', valor: '' }); 
+        setFormData({ nome: '', duracao: '', valor: '' });
         setIsModalOpen(true);
     };
 
@@ -24,49 +24,44 @@ const Servicos = () => {
         setIsSuccessModalOpen(true);
         setTimeout(() => {
             setIsSuccessModalOpen(false);
-        }, 2000); 
+        }, 2000);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // Lógica de submissão do serviço aqui
-        closeModal(); 
-        openSuccessModal(); 
+        closeModal();
+        openSuccessModal();
     };
- 
+
     const handleCancel = () => {
         if (isFormDirty) {
-            setIsDiscardModalOpen(true); 
+            setIsDiscardModalOpen(true);
         } else {
-            closeModal(); 
+            closeModal();
         }
     };
 
     const handleDiscard = () => {
-        setIsFormDirty(false); 
-        setIsDiscardModalOpen(false); 
-        closeModal(); 
+        setIsFormDirty(false);
+        setIsDiscardModalOpen(false);
+        closeModal();
     };
 
     const handleChange = (e) => {
-        setIsFormDirty(true); 
+        setIsFormDirty(true);
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex max-h-screen">
             <Sidebar />
             <div className="flex-1 p-3">
                 <div className="formcontainer">
                     <h1 className="title">Serviços</h1>
                     <div className="flex items-center justify-between">
                         <SearchBar placeholder="Pesquisar Serviço..." />
-                        <button 
-                            onClick={openModal} 
-                            className="text-white bg-pink-500 hover:bg-pink-600 rounded px-2 py-1"
-                        >
-                            Novo Serviço
-                        </button>
+                        <button onClick={openModal} className="text-white bg-pink-500 hover:bg-pink-600 rounded px-2 py-1"> Novo Serviço </button>
                     </div>
                     <DataTable />
                 </div>
@@ -75,21 +70,11 @@ const Servicos = () => {
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
-                        <h2 className="text-lg font-semibold mb-4">Cadastrar Serviço</h2>
+                        <h2 className="title text-center">Cadastrar Serviço</h2>
                         <ServiceForm handleSubmit={handleSubmit} handleChange={handleChange} formData={formData} />
-                        <div className="flex justify-end mt-4">
-                            <button 
-                                onClick={handleCancel} 
-                                className="text-gray-600 hover:text-gray-800 mr-4"
-                            >
-                                Cancelar
-                            </button>
-                            <button 
-                                onClick={handleSubmit} 
-                                className="text-white bg-pink-500 hover:bg-pink-600 rounded px-4 py-2"
-                            >
-                                Cadastrar Serviço
-                            </button>
+                        <div className="flex justify-between mt-4">
+                            <button onClick={handleCancel} className="Action">Cancelar</button>
+                            <button onClick={handleSubmit} className="Action">Cadastrar Serviço</button>
                         </div>
                     </div>
                 </div>
@@ -109,14 +94,14 @@ const Servicos = () => {
                         <h2 className="text-lg font-semibold mb-4">Descartar alterações?</h2>
                         <p>Tem certeza que deseja descartar os dados preenchidos?</p>
                         <div className="flex justify-end mt-4">
-                            <button 
-                                onClick={() => setIsDiscardModalOpen(false)} 
+                            <button
+                                onClick={() => setIsDiscardModalOpen(false)}
                                 className="text-gray-600 hover:text-gray-800 mr-4"
                             >
                                 Não
                             </button>
-                            <button 
-                                onClick={handleDiscard} 
+                            <button
+                                onClick={handleDiscard}
                                 className="text-white bg-red-500 hover:bg-red-600 rounded px-4 py-2"
                             >
                                 Sim, descartar
