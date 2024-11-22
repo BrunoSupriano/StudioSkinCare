@@ -1,7 +1,7 @@
-package com.example.dgc.Agendamentos;
+package com.example.dgc.Agendamento;
 
 import com.example.dgc.Clientes.ClientModel;
-import com.example.dgc.Servicos.ServicoModel;
+import com.example.dgc.Servicos.ServicosModel;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ public class AgendamentoModel {
 
     @ManyToOne
     @JoinColumn(name = "id_servico", referencedColumnName = "id_servico")
-    private ServicoModel servico;
+    private ServicosModel servico;
 
     @Column(name = "data_hora")
     private LocalDateTime dataHora;
@@ -42,11 +42,11 @@ public class AgendamentoModel {
         this.cliente = cliente;
     }
 
-    public ServicoModel getServico() {
+    public ServicosModel getServico() {
         return servico;
     }
 
-    public void setServico(ServicoModel servico) {
+    public void setServico(ServicosModel servico) {
         this.servico = servico;
     }
 

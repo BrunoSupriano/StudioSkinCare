@@ -1,5 +1,6 @@
 package com.example.dgc.Clientes;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,4 +32,9 @@ public class ClientService {
     public void deletar(Long id) {
         clienteRepository.deleteById(id);
     }
+
+    public Optional<ClientModel> buscarPorId(Long id) {
+        return clienteRepository.findById(id);
+    }
+    
 }
