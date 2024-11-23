@@ -1,18 +1,24 @@
 package com.example.dgc.Agendamento;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.dgc.Clientes.ClientModel;
 
 public interface AgendamentoRepository extends JpaRepository<AgendamentoModel, Long> {
     
     List<AgendamentoModel> findByDataHora(LocalDateTime dataHora);
+
+    List<AgendamentoModel> findByCliente(ClientModel cliente);
     
-    List<AgendamentoModel> findByidcliente(Long id_cliente);
+    // Corrigido para usar o objeto ServicosModel
+    List<AgendamentoModel> findByServico(com.example.dgc.Servicos.ServicosModel servico);
     
-    List<AgendamentoModel> findByIdServico(Long id_servico);
+    // Corrigido para usar o objeto ClientModel
+    List<AgendamentoModel> findByClienteAndDataHora(ClientModel cliente, LocalDateTime dataHora);
     
-    List<AgendamentoModel> findByidclienteAndDataHora(Long id_cliente, LocalDateTime dataHora);
-    
-    List<AgendamentoModel> findByIdServicoAndDataHora(Long id_servico, LocalDateTime dataHora);
+    // Corrigido para usar o objeto ServicosModel
+    List<AgendamentoModel> findByServicoAndDataHora(com.example.dgc.Servicos.ServicosModel servico, LocalDateTime dataHora);
 }

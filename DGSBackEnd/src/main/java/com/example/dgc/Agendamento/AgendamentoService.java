@@ -1,16 +1,16 @@
 package com.example.dgc.Agendamento;
 
-import com.example.dgc.Clientes.ClientModel;
-import com.example.dgc.Clientes.ClientService;
-import com.example.dgc.Servicos.ServicosModel;
-import com.example.dgc.Servicos.ServicosRepository;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import com.example.dgc.Clientes.ClientModel;
+import com.example.dgc.Clientes.ClientService;
+import com.example.dgc.Servicos.ServicosModel;
+import com.example.dgc.Servicos.ServicosRepository;
 
 @Service
 public class AgendamentoService {
@@ -49,30 +49,37 @@ public class AgendamentoService {
         return agendamentoRepository.findAll();
     }
 
+    // Corriido nomes incorretos //
+
     public AgendamentoModel atualizar(Long id, Long id_cliente, Long id_servico, LocalDateTime dataHora) {
         Optional<AgendamentoModel> agendamentoExistente = agendamentoRepository.findById(id);
-
+    
         if (agendamentoExistente.isEmpty()) {
             throw new RuntimeException("Agendamento não encontrado");
         }
-
+    
         Optional<ClientModel> cliente = clientService.buscarPorId(id_cliente);
         Optional<ServicosModel> servico = servicoRepository.findById(id_servico);
-
+    
         if (cliente.isEmpty() || servico.isEmpty()) {
             throw new RuntimeException("Cliente ou Serviço não encontrado");
         }
-
-        List<AgendamentoModel> agendamentos = agendamentoRepository.findByDataHora(dataHora);
+    
+        // Verifica se existe outro agendamento no mesmo horário (excluindo o atual)
+        List<AgendamentoModel> agendamentos = agendamentoRepository.findByDataHora(dataHora)
+            .stream()
+            .filter(a -> !a.getId().equals(id))
+            .toList();
+            
         if (!agendamentos.isEmpty()) {
             throw new RuntimeException("Horário já agendado");
         }
-
+    
         AgendamentoModel agendamento = agendamentoExistente.get();
         agendamento.setCliente(cliente.get());
         agendamento.setServico(servico.get());
         agendamento.setDataHora(dataHora);
-
+    
         return agendamentoRepository.save(agendamento);
     }
 
