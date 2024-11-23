@@ -8,11 +8,11 @@ public interface AgendamentoRepository extends JpaRepository<AgendamentoModel, L
     
     List<AgendamentoModel> findByDataHora(LocalDateTime dataHora);
     
-    List<AgendamentoModel> findByid_cliente(Long id_cliente);
+    List<AgendamentoModel> findByidcliente(Long id_cliente);
     
-    List<AgendamentoModel> findByServicoId(Long servicoId);
+    List<AgendamentoModel> findByIdServico(Long id_servico);
     
-    List<AgendamentoModel> findByid_clienteAndDataHora(Long id_cliente, LocalDateTime dataHora);
+    List<AgendamentoModel> findByidclienteAndDataHora(Long id_cliente, LocalDateTime dataHora);
     
-    List<AgendamentoModel> findByServicoIdAndDataHora(Long servicoId, LocalDateTime dataHora);
+    List<AgendamentoModel> findByIdServicoAndDataHora(Long id_servico, LocalDateTime dataHora);
 }
