@@ -112,28 +112,59 @@
     color: #f55381;
 }
 
+/* Botões */
+
+/* Estiliza os botões dentro do grupo de botões */
 .rbc-btn-group > button {
-    border: none;
+    border: 1px solid #f55381 !important;
     background-color: transparent;
+    color: #f55381;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Estilo do botão normal */
 .rbc-toolbar button {
     color: #f55381;
-    background-color: #fff;
     padding: 10px 15px;
     border-radius: 8px;
     transition: background-color 0.3s ease;
 }
 
+/* Efeito de hover (quando passa o mouse sobre o botão) */
 .rbc-toolbar button:hover {
     background-color: #ffe9ef;
+    color: #f55381;
 }
 
+/* Estilo para o botão ativo (quando clicado) */
 .rbc-toolbar button:active,
 .rbc-toolbar button.rbc-active {
-    background-color: #f38ba8;
-    color: #fff;
+    background-color: #f55381 !important;
+    color: #ffe9ef !important;
+    box-shadow: none;
 }
+
+/* Removendo estilo de hover no botão ativo */
+.rbc-toolbar button.rbc-active:hover {
+    background-color: #f55381 !important;
+    color: #ffe9ef !important;
+}
+
+/* Garantindo que o botão ativo mantenha a cor */
+.rbc-btn-group > button:focus {
+    outline: none;
+    background-color: #f55381 !important;
+    color: #ffe9ef !important;
+}
+
+/* Manter a cor de fundo após o clique */
+.rbc-btn-group button.rbc-active {
+    background-color: #f55381 !important;
+    color: #ffe9ef !important;
+}
+
 
 /* Cabeçalho dos Dias */
 .rbc-header {
@@ -144,6 +175,8 @@
     padding: 10px;
     border-radius: 15px;
     box-shadow: none; /* Remove qualquer sombra */
+    align-items: center; /* Alinha verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
 }
 
 .rbc-button-link{
@@ -170,11 +203,7 @@
     border: none;
 }
 
-/* Linhas verticais */
-.rbc-day-bg + .rbc-day-bg {
-    border-radius: 15px;
-    border: solid 1px #f38ba8;;
-}
+
 
 /* Marcação dia prox mes */
 .rbc-off-range-bg {
@@ -190,14 +219,18 @@
     box-sizing: border-box; /* Garante que a borda e a margem não afetem o tamanho do elemento */
 }
 
+
+/* Linhas verticais */
+.rbc-day-bg + .rbc-day-bg {
+    border-radius: 15px;
+    border: solid 1px #f38ba8;;
+}
+
 /* Marcação dia atual */
 .rbc-today {
     background-color: #f38ba86e;
     border-radius: 15px;
 }
-
-
-
 
 
 /* Eventos */
@@ -219,11 +252,16 @@
     color: #f55381;
 }
 
-.rbc-agenda-date-cell, 
-.rbc-agenda-time-cell {
-    background-color: #f38ba8;
-    color: #fff;
+
+.rbc-time-view .rbc-allday-cell {
+    -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border: none;
 }
+
 
 .rbc-agenda-event-cell {
     border-radius: 12px;
@@ -234,5 +272,135 @@
 }
 
 .rbc-agenda-event-cell:hover {
-    background-color: #f7b2b2;
+    background-color: #333;
+    color: #fff;
+}
+
+/* Não sei como, mas aqui é só da aba Semana */
+
+/* Essa config remove o elemento desnecessário da tela de semana */
+
+.rbc-time-view .rbc-allday-cell{
+    display: none;
+}
+
+.rbc-time-view .rbc-header{
+    background-color: #ffe9ef;
+    padding: 1px;
+    border-radius: 15px;
+    box-shadow: none; /* Remove qualquer sombra */;
+    margin: 1px;
+    margin-bottom: 5px;
+}
+
+
+/* Modifica o elemento de dia atual */
+.rbc-time-view .rbc-header + .rbc-today{
+    background-color: #f38ba86e;
+    padding: 1px;
+    border-radius: 15px;
+    box-shadow: none; /* Remove qualquer sombra */;
+    margin: 1px;    
+}
+
+.rbc-time-view .rbc-today {
+    border-radius: 0px;
+}
+
+.rbc-time-view .rbc-button-link{
+    color: #f55381;
+    border-radius: 0px;
+    background-color: transparent;
+    border: none;
+}
+
+
+.rbc-current-time-indicator {
+    background-color: #f55381; /* Cor da linha */
+    height: 3px; /* Espessura da linha */
+    z-index: 1000; /* Certifique-se de que está acima de outros elementos */
+}
+
+/* teste */
+
+.rbc-time-content {
+    border: none;
+    box-shadow: none; /* Remove sombras, se aplicável */
+}
+
+.rbc-time-view {
+    border: none;
+    box-shadow: none; /* Remove sombras, se aplicável */
+}
+
+.rbc-label.rbc-time-header-gutter {
+    border: none;
+    box-shadow: none; /* Remove sombras, se aplicável */
+}
+
+.rbc-time-header-content {
+    border: none;
+    box-shadow: none; /* Remove sombras, se aplicável */
+}
+
+.rbc-time-header.rbc-overflowing{
+    border: none;
+    box-shadow: none; /* Remove sombras, se aplicável */
+}
+
+/* teste de linhas*/
+
+/* Altera as linhas de grade da agenda diária */
+.rbc-timeslot-group {
+    border-right: 1px solid rgba(255, 0, 76, 0.135); /* Borda lateral mais sutil */
+    border-bottom: 1px solid rgba(255, 0, 76, 0.135); /* Borda inferior mais sutil */
+    height: 2.5rem; /* Altura de cada linha */
+}
+
+/* Personaliza o horário no início de cada linha */
+.rbc-timeslot-group .rbc-label {
+    font-size: 0.85rem; /* Reduz o tamanho da fonte */
+    color: #4b3a3fbf; /* Cor do texto */
+    font-weight: bold; /* Destaca o horário */
+    padding-left: 0.5rem; /* Ajusta espaçamento */
+}
+
+
+/*Agenda*/
+
+/* Estiliza os cabeçalhos da tabela da aba de eventos */
+.rbc-agenda-table .rbc-header {
+    background-color: #f8f9fa; /* Fundo cinza claro */
+    border-radius: 0px;
+}
+
+/* Alinha corretamente as células da tabela */
+.rbc-agenda-table td, 
+.rbc-agenda-table th {
+    padding: 0.75rem; /* Espaçamento interno */
+    text-align: left; /* Alinha o texto à esquerda */
+    border: 1px solid rgba(75, 58, 63, 0.1); /* Bordas discretas */
+    vertical-align: middle; /* Alinha o conteúdo verticalmente */
+}
+
+/* Estilo alternado para as linhas */
+.rbc-agenda-table tr:nth-child(even) {
+    background-color: #ffffff; /* Fundo branco para linhas pares */
+}
+.rbc-agenda-table tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Fundo cinza claro para linhas ímpares */
+}
+
+/* Ajusta largura das colunas de forma responsiva */
+.rbc-agenda-table th:first-child,
+.rbc-agenda-table td:first-child {
+    width: 20%; /* Coluna Data */
+}
+.rbc-agenda-table th:nth-child(2),
+.rbc-agenda-table td:nth-child(2) {
+    width: 20%; /* Coluna Hora */
+}
+.rbc-agenda-table th:last-child,
+.rbc-agenda-table td:last-child {
+    width: 60%; /* Coluna Evento */
 }

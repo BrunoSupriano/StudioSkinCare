@@ -118,7 +118,6 @@ function Agendamento() {
                         onEventDrop={moverEventos}
                         onEventResize={moverEventos}
                         onSelectEvent={handleEventClick}
-                        className="calendar"
                         toolbar={true} // Desativa a toolbar padrão
                         messages={messages} // Adicione 'as mensagens aqui
                     />
