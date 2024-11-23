@@ -26,6 +26,7 @@ function FiltroAtividades({ atividades, onSelecionarAtividades }) {
     return (
         tiposAtividades.length > 0 && (
             <div className="formfilter">
+                <h3 className="title-h3">Filtrar Eventos</h3>
                 <div className="formlabel" style={{ maxHeight: '28vh', overflowY: 'auto' }}>
                     {tiposAtividades.map(tipo => (
                         <Form.Check
@@ -37,7 +38,9 @@ function FiltroAtividades({ atividades, onSelecionarAtividades }) {
                         />
                     ))}
                 </div>
-                <button className="save rounded-lg border p-2 mt-2" onClick={() => setTiposSelecionados([])}>Limpar Filtro</button>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <button className="save" onClick={() => setTiposSelecionados([])}>Limpar Filtro</button>
+                </div>
             </div>
         )
     );

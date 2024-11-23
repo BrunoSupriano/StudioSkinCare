@@ -81,17 +81,16 @@ function Adicionar({onAdicionar}){
                     style={{marginTop: '10px', float:'right'}}>
                         {expanded ? <i className="bi bi-chevron-double-up"></i>:<i className="bi bi-chevron-double-down"></i>}
                 </Button>
-                <div>
-                <Button
-                    variant='success'
-                    type='submit'
-                    className="save"
-                    disabled={!novoEvento.title || !novoEvento.start|| !novoEvento.end}
-                >
-                    Salvar
-                </Button>
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                    <Button
+                        variant='success'
+                        type='submit'
+                        className="save"
+                        disabled={!novoEvento.title || !novoEvento.start|| !novoEvento.end}
+                    >
+                        Salvar
+                    </Button>
                 </div>    
-
             </Form>
         </div>
     )

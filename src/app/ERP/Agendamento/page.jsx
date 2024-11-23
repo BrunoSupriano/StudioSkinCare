@@ -101,7 +101,7 @@ function Agendamento() {
 
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex">
             <Sidebar />
             <div className="calendariocontainer">
                 {/* Mover a toolbar para cima */}
@@ -133,9 +133,9 @@ function Agendamento() {
                     />
                 )}
             </div>
-            <div>
-            <Adicionar onAdicionar={handleAdicionar} />
-            <FiltroAtividades atividades={eventos} onSelecionarAtividades={handleSelecionarAtividades} />
+            <div className='containerfilters'>
+                <Adicionar onAdicionar={handleAdicionar} />
+                <FiltroAtividades atividades={eventos} onSelecionarAtividades={handleSelecionarAtividades} />
             </div>
         </div>
     );
