@@ -24,9 +24,9 @@ public class AgendamentoService {
     @Autowired
     private ClientService clientService;
 
-    public AgendamentoModel agendar(Long clienteId, Long servicoId, LocalDateTime dataHora) {
-        Optional<ClientModel> cliente = clientService.buscarPorId(clienteId);
-        Optional<ServicosModel> servico = servicoRepository.findById(servicoId);
+    public AgendamentoModel agendar(Long id_cliente, Long id_servico, LocalDateTime dataHora) {
+        Optional<ClientModel> cliente = clientService.buscarPorId(id_cliente);
+        Optional<ServicosModel> servico = servicoRepository.findById(id_servico);
 
         if (cliente.isEmpty() || servico.isEmpty()) {
             throw new RuntimeException("Cliente ou Serviço não encontrado");
@@ -49,15 +49,15 @@ public class AgendamentoService {
         return agendamentoRepository.findAll();
     }
 
-    public AgendamentoModel atualizar(Long id, Long clienteId, Long servicoId, LocalDateTime dataHora) {
+    public AgendamentoModel atualizar(Long id, Long id_cliente, Long id_servico, LocalDateTime dataHora) {
         Optional<AgendamentoModel> agendamentoExistente = agendamentoRepository.findById(id);
 
         if (agendamentoExistente.isEmpty()) {
             throw new RuntimeException("Agendamento não encontrado");
         }
 
-        Optional<ClientModel> cliente = clientService.buscarPorId(clienteId);
-        Optional<ServicosModel> servico = servicoRepository.findById(servicoId);
+        Optional<ClientModel> cliente = clientService.buscarPorId(id_cliente);
+        Optional<ServicosModel> servico = servicoRepository.findById(id_servico);
 
         if (cliente.isEmpty() || servico.isEmpty()) {
             throw new RuntimeException("Cliente ou Serviço não encontrado");

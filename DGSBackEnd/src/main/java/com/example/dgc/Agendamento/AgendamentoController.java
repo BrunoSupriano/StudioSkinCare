@@ -1,6 +1,5 @@
 package com.example.dgc.Agendamento;
 
-import com.example.dgc.Agendamento.AgendamentoModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +17,14 @@ public class AgendamentoController {
 
     @PostMapping
     public ResponseEntity<AgendamentoModel> agendar(
-            @RequestParam Long clienteId,
-            @RequestParam Long servicoId,
+            @RequestParam Long id_cliente,
+            @RequestParam Long id_servico,
             @RequestParam String dataHora) {
 
         LocalDateTime localDateTime = LocalDateTime.parse(dataHora);
 
         try {
-            AgendamentoModel agendamento = agendamentoService.agendar(clienteId, servicoId, localDateTime);
+            AgendamentoModel agendamento = agendamentoService.agendar(id_cliente, id_servico, localDateTime);
             return ResponseEntity.ok(agendamento);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
@@ -40,14 +39,14 @@ public class AgendamentoController {
     @PutMapping("/{id}")
     public ResponseEntity<AgendamentoModel> atualizar(
             @PathVariable Long id,
-            @RequestParam Long clienteId,
-            @RequestParam Long servicoId,
+            @RequestParam Long id_cliente,
+            @RequestParam Long id_servico,
             @RequestParam String dataHora) {
 
         LocalDateTime localDateTime = LocalDateTime.parse(dataHora);
 
         try {
-            AgendamentoModel agendamento = agendamentoService.atualizar(id, clienteId, servicoId, localDateTime);
+            AgendamentoModel agendamento = agendamentoService.atualizar(id, id_cliente, id_servico, localDateTime);
             return ResponseEntity.ok(agendamento);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
