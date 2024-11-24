@@ -166,7 +166,7 @@ function Agendamento() {
     }
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex">
             <Sidebar />
             <div className="calendariocontainer">
                 <div className="calendario">
@@ -182,9 +182,9 @@ function Agendamento() {
                         onEventDrop={moverEventos}
                         onEventResize={moverEventos}
                         onSelectEvent={handleEventClick}
+                        toolbar={true} // Desativa a toolbar padrão
+                        messages={messages} // Adicione 'as mensagens aqui
                         className="calendar"
-                        toolbar={true}
-                        messages={messages}
                         timezone="local"
                     />
                 </div>
@@ -198,12 +198,10 @@ function Agendamento() {
                     />
                 )}
             </div>
-            <div>
+            <div className='containerfilters'>
                 <Adicionar onAdicionar={handleAdicionar} />
-                <FiltroAtividades 
-                    atividades={eventos} 
-                    onSelecionarAtividades={handleSelecionarAtividades} 
-                />
+                <FiltroAtividades atividades={eventos} onSelecionarAtividades={handleSelecionarAtividades} />
+
             </div>
         </div>
     );

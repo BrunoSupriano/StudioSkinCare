@@ -48,6 +48,8 @@ const DataTable = () => {
     // Função para enviar dados editados para a API
     const handleEditSubmit = async (e) => {
         e.preventDefault();
+        console.log("handleEditSubmit foi chamado com:", selectedCliente);
+    
         try {
             const response = await fetch(`http://localhost:8080/cliente/${selectedCliente.id_cliente}`, {
                 method: 'PUT',
@@ -57,6 +59,7 @@ const DataTable = () => {
                 body: JSON.stringify(selectedCliente),
             });
             if (response.ok) {
+                console.log("Cliente editado com sucesso");
                 const updatedCliente = await response.json();
                 setClientes((prevClientes) =>
                     prevClientes.map((cliente) =>
@@ -65,12 +68,13 @@ const DataTable = () => {
                 );
                 closeEditModal();
             } else {
-                console.error("Erro ao editar cliente");
+                console.error("Erro ao editar cliente:", response.status);
             }
         } catch (error) {
             console.error("Erro ao enviar os dados editados:", error);
         }
     };
+    
 
     // Função para deletar cliente
     const confirmDelete = async () => {
@@ -91,14 +95,39 @@ const DataTable = () => {
         }
     };
 
+    const formatTelefone = (telefone) => {
+        return telefone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    };
+
+    const formatCPF = (cpf) => {
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    };
+
+    const formatNascimento = (nascimento) => {
+        const [year, month, day] = nascimento.split('-');
+        return `${day}/${month}/${year}`;
+    };
+
     const columns = useMemo(
         () => [
             { Header: 'Nome', accessor: 'nome' },
-            { Header: 'Telefone', accessor: 'telefone' },
+            {
+                Header: 'Telefone',
+                accessor: 'telefone',
+                Cell: ({ value }) => formatTelefone(value),
+            },
             { Header: 'Endereço', accessor: 'endereco' },
-            { Header: 'CPF', accessor: 'cpf' },
+            {
+                Header: 'CPF',
+                accessor: 'cpf',
+                Cell: ({ value }) => formatCPF(value),
+            },
             { Header: 'Email', accessor: 'email' },
-            { Header: 'Nascimento', accessor: 'nascimento' },
+            {
+                Header: 'Nascimento',
+                accessor: 'nascimento',
+                Cell: ({ value }) => formatNascimento(value),
+            },
             {
                 Header: 'Ações',
                 accessor: 'acoes',
@@ -131,17 +160,20 @@ const DataTable = () => {
                                     [e.target.name]: e.target.value,
                                 })
                             }
-                            cliente={selectedCliente}
+                            formData={selectedCliente}
                         />
-                        {/* Botões para editar e excluir */}
-                        <div className="flex justify-between mt-4">
-                            <button onClick={confirmDelete} className="Action">
-                                Excluir
+                            {/* Botões para editar e excluir */}
+                            <div className="flex justify-between mt-4">
+                            <button
+                                onClick={handleEditSubmit}
+                                className="Action bg-green-500 hover:bg-green-600 text-white rounded px-4 py-2"
+                            >
+                                Salvar Edição
                             </button>
-                            <button onClick={handleCancel} className="Action">
-                                Cancelar
-                            </button>
-                        </div>
+                                <button onClick={handleCancel} className="Action bg-gray-500 hover:bg-gray-600 text-white rounded px-4 py-2">
+                                    Cancelar
+                                </button>
+                            </div>
                     </div>
                 </div>
             )}

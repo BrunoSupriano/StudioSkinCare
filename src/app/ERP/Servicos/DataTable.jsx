@@ -104,8 +104,19 @@ const DataTable = () => {
     const columns = useMemo(
         () => [
             { Header: 'Nome', accessor: 'nome' },
-            { Header: 'Duração', accessor: 'duracao' },
-            { Header: 'Valor (R$)', accessor: 'valor' },
+            { 
+                Header: 'Duração', 
+                accessor: 'duracao',
+                Cell: ({ value }) => {
+                    const [hours, minutes] = value.split(':');
+                    return `${hours}:${minutes}`;
+                }
+            },
+            { 
+                Header: 'Valor (R$)', 
+                accessor: 'valor',
+                Cell: ({ value }) => `R$ ${parseFloat(value).toFixed(2).replace('.', ',')}` 
+            },
             {
                 Header: 'Ações',
                 accessor: 'acoes',
