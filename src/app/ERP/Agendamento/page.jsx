@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useCallback, useEffect } from 'react'; // Adicionado useEffect
-import moment from 'moment';
+import React, { useState, useCallback, useEffect } from 'react';
+import moment from 'moment-timezone';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -10,7 +10,7 @@ import EventModal from './components/EventModal';
 import Adicionar from './components/Adicionar';
 import FiltroAtividades from './components/FiltroAtividades.jsx';
 import 'moment/locale/pt-br';
-import axios from 'axios'; // Importar axios
+import axios from 'axios';
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 const localizer = momentLocalizer(moment);
@@ -21,29 +21,33 @@ function Agendamento() {
     const [eventosFiltrados, setEventosFiltrados] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    moment.locale('pt-br')
+    moment.locale('pt-br');
 
     const [view, setView] = useState(Views.MONTH);
     const [date, setDate] = useState(moment().toDate());
 
-    // Função para carregar agendamentos do backend
     const carregarAgendamentos = async () => {
         try {
             setLoading(true);
             const response = await axios.get('http://localhost:8080/agendamento');
             
-            // Converter os dados do backend para o formato do calendário
-            const eventosFormatados = response.data.map(agendamento => ({
-                id: agendamento.id,
-                title: `${agendamento.cliente.nome} - ${agendamento.servico.nome}`,
-                start: new Date(agendamento.dataHora),
-                end: new Date(new Date(agendamento.dataHora).getTime() + 60*60*1000), // Adiciona 1 hora
-                resource: agendamento, // Mantém os dados originais do agendamento
-                tipo: agendamento.servico.nome // Para o filtro de atividades
-            }));
+            const eventosFormatados = response.data.map(agendamento => {
+                const startDate = moment(agendamento.dataInicial).tz('America/Sao_Paulo', true).toDate();
+                const endDate = moment(agendamento.dataFinal).tz('America/Sao_Paulo', true).toDate();
+                
+                return {
+                    id: agendamento.id_agendamento,
+                    title: `${agendamento.cliente.nome}`,
+                    start: startDate,
+                    end: endDate,
+                    resource: agendamento,
+                    tipo: agendamento.servico.nome
+                };
+            });
             
             setEventos(eventosFormatados);
             setEventosFiltrados(eventosFormatados);
+            
         } catch (error) {
             console.error('Erro ao carregar agendamentos:', error);
         } finally {
@@ -51,27 +55,34 @@ function Agendamento() {
         }
     };
 
-    // Carregar agendamentos quando o componente montar
     useEffect(() => {
         carregarAgendamentos();
     }, []);
 
-    // Atualizar função moverEventos para persistir no backend
     const moverEventos = async (data) => {
+        console.log('moverEventos data:', data);
         const { start, end, event } = data;
+        if (!event.resource.id) {
+            console.error('Event resource ID is undefined');
+            return;
+        }
+        const payload = {
+            id_cliente: event.resource.cliente.id,
+            id_servico: event.resource.servico.idServico,
+            dataInicial: moment(start).format('YYYY-MM-DDTHH:mm:ss'),
+            dataFinal: moment(end).format('YYYY-MM-DDTHH:mm:ss'),
+            status: event.resource.status
+        };
+        console.log('Payload for PUT request:', payload);
         try {
-            const response = await axios.put(`http://localhost:8080/agendamento/${event.id}`, {
-                id_cliente: event.resource.cliente.id,
-                id_servico: event.resource.servico.id,
-                dataHora: moment(start).format('YYYY-MM-DDTHH:mm:ss')
-            });
-
+            const response = await axios.put(`http://localhost:8080/agendamento/${event.resource.id}`, payload);
+            
             if (response.data) {
-                await carregarAgendamentos(); // Recarrega todos os eventos
+                await carregarAgendamentos();
             }
         } catch (error) {
+            console.log('dados passados:', data);
             console.error('Erro ao mover evento:', error);
-            // Você pode adicionar um toast ou alerta aqui
         }
     };
 
@@ -83,47 +94,43 @@ function Agendamento() {
         setEventoSelecionado(null);
     };
 
-    // Atualizar função handleAdicionar para incluir a chamada ao backend
     const handleAdicionar = async (novoEvento) => {
         try {
             await axios.post('http://localhost:8080/agendamento', {
                 id_cliente: novoEvento.cliente.id,
-                id_servico: novoEvento.servico.id,
+                data_inicial: moment(novoEvento.start).format('YYYY-MM-DDTHH:mm:ss'),
+                data_final: moment(novoEvento.end).format('YYYY-MM-DDTHH:mm:ss'),
                 dataHora: moment(novoEvento.dataHora).format('YYYY-MM-DDTHH:mm:ss')
             });
 
-            await carregarAgendamentos(); // Recarrega todos os eventos
+            await carregarAgendamentos();
         } catch (error) {
             console.error('Erro ao adicionar evento:', error);
-            // Você pode adicionar um toast ou alerta aqui
         }
     };
 
-    // Atualizar função handleEventDelete para incluir a chamada ao backend
     const handleEventDelete = async (eventId) => {
         try {
             await axios.delete(`http://localhost:8080/agendamento/${eventId}`);
-            await carregarAgendamentos(); // Recarrega todos os eventos
+            await carregarAgendamentos();
             setEventoSelecionado(null);
         } catch (error) {
             console.error('Erro ao deletar evento:', error);
-            // Você pode adicionar um toast ou alerta aqui
         }
     };
 
-    // Atualizar função handleEventUpdate para incluir a chamada ao backend
     const handleEventUpdate = async (updatedEvent) => {
         try {
             await axios.put(`http://localhost:8080/agendamento/${updatedEvent.id}`, {
-                id_cliente: updatedEvent.resource.cliente.id,
+                data_inicial: moment(updatedEvent.start).format('YYYY-MM-DDTHH:mm:ss'),
+                data_final: moment(updatedEvent.end).format('YYYY-MM-DDTHH:mm:ss'),
                 id_servico: updatedEvent.resource.servico.id,
                 dataHora: moment(updatedEvent.start).format('YYYY-MM-DDTHH:mm:ss')
             });
 
-            await carregarAgendamentos(); // Recarrega todos os eventos
+            await carregarAgendamentos();
         } catch (error) {
             console.error('Erro ao atualizar evento:', error);
-            // Você pode adicionar um toast ou alerta aqui
         }
     };
 
@@ -155,7 +162,7 @@ function Agendamento() {
     };
 
     if (loading) {
-        return <div>Carregando...</div>; // Ou um componente de loading mais elaborado
+        return <div>Carregando...</div>;
     }
 
     return (
@@ -178,6 +185,7 @@ function Agendamento() {
                         className="calendar"
                         toolbar={true}
                         messages={messages}
+                        timezone="local"
                     />
                 </div>
                 {eventoSelecionado && (

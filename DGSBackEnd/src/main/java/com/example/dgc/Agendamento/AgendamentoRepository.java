@@ -8,17 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.dgc.Clientes.ClientModel;
 
 public interface AgendamentoRepository extends JpaRepository<AgendamentoModel, Long> {
-    
-    List<AgendamentoModel> findByDataHora(LocalDateTime dataHora);
-
+    List<AgendamentoModel> findByDataInicial(LocalDateTime dataInicial);
     List<AgendamentoModel> findByCliente(ClientModel cliente);
-    
-    // Corrigido para usar o objeto ServicosModel
     List<AgendamentoModel> findByServico(com.example.dgc.Servicos.ServicosModel servico);
-    
-    // Corrigido para usar o objeto ClientModel
-    List<AgendamentoModel> findByClienteAndDataHora(ClientModel cliente, LocalDateTime dataHora);
-    
-    // Corrigido para usar o objeto ServicosModel
-    List<AgendamentoModel> findByServicoAndDataHora(com.example.dgc.Servicos.ServicosModel servico, LocalDateTime dataHora);
+    List<AgendamentoModel> findByClienteAndDataInicial(ClientModel cliente, LocalDateTime dataInicial);
+    List<AgendamentoModel> findByServicoAndDataInicial(com.example.dgc.Servicos.ServicosModel servico, LocalDateTime dataInicial);
 }
