@@ -26,7 +26,7 @@ function FiltroAtividades({ atividades, onSelecionarAtividades }) {
     return (
         tiposAtividades.length > 0 && (
             <div className="formfilter">
-                <h3 className="title-h3">Filtrar Eventos</h3>
+                <h3 className="title-h3 text-center">Filtrar Eventos</h3>
                 <div className="formlabel" style={{ maxHeight: '28vh', overflowY: 'auto' }}>
                     {tiposAtividades.map(tipo => (
                         <Form.Check

@@ -86,6 +86,8 @@ function Agendamento() {
         }
     };
 
+    
+
     const handleEventClick = (evento) => {
         setEventoSelecionado(evento);
     };
@@ -201,7 +203,6 @@ function Agendamento() {
             <div className='containerfilters'>
                 <Adicionar onAdicionar={handleAdicionar} />
                 <FiltroAtividades atividades={eventos} onSelecionarAtividades={handleSelecionarAtividades} />
-
             </div>
         </div>
     );
