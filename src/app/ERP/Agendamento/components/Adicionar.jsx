@@ -1,61 +1,87 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Row, Col, Collapse } from 'react-bootstrap';
-import axios from 'axios'; // Não esqueça de instalar o axios
+import { Button, Form } from 'react-bootstrap';
 
 function Adicionar({ onAdicionar }) {
     const [novoEvento, setNovoEvento] = useState({
         cliente: {
-            id: '', // Você precisará de um select para escolher o cliente
+            id: '',
             nome: ''
         },
         servico: {
-            id: '', // Você precisará de um select para escolher o serviço
-            nome: ''
+            idServico: '',
+            nome: '',
+            duracao: ''
         },
         dataHora: '',
     });
     const [expanded, setExpanded] = useState(false);
-    const [clientes, setClientes] = useState([]); // Lista de clientes
-    const [servicos, setServicos] = useState([]); // Lista de serviços
+    const [clientes, setClientes] = useState([]);
+    const [servicos, setServicos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Carregar clientes e serviços quando o componente montar
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
                 const [clientesResponse, servicosResponse] = await Promise.all([
-                    axios.get('http://localhost:8080/clientes'),
-                    axios.get('http://localhost:8080/servicos')
+                    fetch('http://localhost:8080/cliente'),
+                    fetch('http://localhost:8080/servicos')
                 ]);
-                setClientes(clientesResponse.data);
-                setServicos(servicosResponse.data);
+
+                if (!clientesResponse.ok) {
+                    throw new Error(`Erro ao buscar clientes: ${clientesResponse.statusText}`);
+                }
+                if (!servicosResponse.ok) {
+                    throw new Error(`Erro ao buscar serviços: ${servicosResponse.statusText}`);
+                }
+
+                const clientesData = await clientesResponse.json();
+                const servicosData = await servicosResponse.json();
+
+                console.log('Serviços carregados:', servicosData);
+                
+                setClientes(Array.isArray(clientesData) ? clientesData : []);
+                setServicos(Array.isArray(servicosData) ? servicosData : []);
             } catch (error) {
-                console.error('Erro ao carregar dados:', error);
+                setError(error.message);
+                console.error("Erro ao carregar dados:", error);
+            } finally {
+                setLoading(false);
             }
         };
+
         fetchData();
     }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        
         if (name === 'cliente') {
             const selectedClient = clientes.find(c => c.id === parseInt(value));
             setNovoEvento(prev => ({
                 ...prev,
-                cliente: {
-                    id: selectedClient.id,
-                    nome: selectedClient.nome
-                }
+                cliente: selectedClient 
+                    ? { id: selectedClient.id, nome: selectedClient.nome }
+                    : { id: '', nome: '' }
             }));
-        } else if (name === 'servico') {
-            const selectedService = servicos.find(s => s.id === parseInt(value));
+        } 
+        else if (name === 'servico') {
+            const selectedService = servicos.find(s => s.idServico === parseInt(value));
+            console.log('Serviço selecionado:', selectedService);
             setNovoEvento(prev => ({
                 ...prev,
-                servico: {
-                    id: selectedService.id,
-                    nome: selectedService.nome
-                }
+                servico: selectedService 
+                    ? { 
+                        idServico: selectedService.idServico,
+                        nome: selectedService.nome,
+                        valor: selectedService.valor,
+                        duracao: selectedService.duracao
+                    }
+                    : { idServico: '', nome: '', duracao: '' }
             }));
-        } else if (name === 'dataHora') {
+        }
+        else if (name === 'dataHora') {
             setNovoEvento(prev => ({
                 ...prev,
                 dataHora: value
@@ -63,62 +89,100 @@ function Adicionar({ onAdicionar }) {
         }
     };
 
+    // Função para calcular a data final baseada na duração do serviço
+    const calcularDataFinal = (dataInicial, duracao) => {
+        const [horas, minutos] = duracao.split(':').map(Number);
+        const dataFinal = new Date(dataInicial);
+        dataFinal.setHours(dataFinal.getHours() + horas);
+        dataFinal.setMinutes(dataFinal.getMinutes() + minutos);
+        return dataFinal;
+    };
+
+    // Função para formatar a data no formato esperado pela API
+    const formatarData = (data) => {
+        return data.toISOString().slice(0, 19);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Formatando os dados para enviar ao backend
+            const dataInicial = new Date(novoEvento.dataHora);
+            const dataFinal = calcularDataFinal(dataInicial, novoEvento.servico.duracao);
+
             const agendamentoData = {
-                id_cliente: novoEvento.cliente.id,
-                id_servico: novoEvento.servico.id,
-                dataHora: novoEvento.dataHora
+                id_cliente: parseInt(novoEvento.cliente.id),
+                id_servico: parseInt(novoEvento.servico.idServico),
+                dataInicial: formatarData(dataInicial),
+                dataFinal: formatarData(dataFinal),
+                status: 1
             };
 
-            const response = await axios.post('http://localhost:8080/agendamento', agendamentoData);
-            
-            // Convertendo a resposta para o formato do Big Calendar
+            console.log('Dados do agendamento a serem enviados:', agendamentoData);
+
+            const response = await fetch('http://localhost:8080/agendamento', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(agendamentoData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Erro ao salvar agendamento');
+            }
+
+            const responseData = await response.json();
+
             const eventoCalendario = {
                 title: `${novoEvento.cliente.nome} - ${novoEvento.servico.nome}`,
-                start: new Date(novoEvento.dataHora),
-                end: new Date(new Date(novoEvento.dataHora).getTime() + 60*60*1000), // Adiciona 1 hora
-                resource: response.data
+                start: dataInicial,
+                end: dataFinal,
+                resource: responseData
             };
 
             onAdicionar(eventoCalendario);
-            
-            // Limpar o formulário
+
+            // Reset form
             setNovoEvento({
                 cliente: { id: '', nome: '' },
-                servico: { id: '', nome: '' },
+                servico: { idServico: '', nome: '', duracao: '' },
                 dataHora: ''
             });
+
+            alert('Agendamento salvo com sucesso!');
         } catch (error) {
             console.error('Erro ao salvar agendamento:', error);
-            alert('Erro ao salvar o agendamento. Por favor, tente novamente.');
+            alert('Erro ao salvar o agendamento: ' + error.message);
         }
     };
 
+    if (loading) return <div className="text-center p-4">Carregando...</div>;
+    if (error) return <div className="text-center p-4 text-danger">{error}</div>;
+
     return (
         <div className="formfilter">
-            <h3 className="title-h3">Adicionar Agendamento</h3>
+            <h3 className="title-h3 text-center">Adicionar Agendamento</h3>
             <Form onSubmit={handleSubmit}>
-                <Form.Group controlId='formBasicClient'>
+                <Form.Group controlId="formBasicClient" className="mb-3">
                     <Form.Label className="formlabel">Cliente</Form.Label>
-                    <Form.Select 
+                    <Form.Select
                         name="cliente"
                         className="Custom-input"
                         value={novoEvento.cliente.id}
                         onChange={handleChange}
+                        required
                     >
                         <option value="">Selecione um cliente</option>
                         {clientes.map(cliente => (
-                            <option key={cliente.id} value={cliente.id}>
+                            <option key={`cliente-${cliente.id}`} value={cliente.id}>
                                 {cliente.nome}
                             </option>
                         ))}
                     </Form.Select>
                 </Form.Group>
 
-                <Form.Group controlId="formBasicDateTime">
+                <Form.Group controlId="formBasicDateTime" className="mb-3">
                     <Form.Label className="formlabel">Data e Hora</Form.Label>
                     <Form.Control
                         type="datetime-local"
@@ -126,43 +190,46 @@ function Adicionar({ onAdicionar }) {
                         className="Custom-input"
                         value={novoEvento.dataHora}
                         onChange={handleChange}
+                        required
                     />
                 </Form.Group>
 
-                <Collapse in={expanded}>
-                    <div>
-                        <Form.Group controlId='formBasicService'>
-                            <Form.Label className="formlabel">Tipo de Serviço</Form.Label>
-                            <Form.Select
-                                name="servico"
-                                className="Custom-input"
-                                value={novoEvento.servico.id}
-                                onChange={handleChange}
+                <Form.Group controlId="formBasicService" className="mb-3">
+                    <Form.Label className="formlabel">Tipo de Serviço</Form.Label>
+                    <Form.Select
+                        name="servico"
+                        className="Custom-input"
+                        value={novoEvento.servico.idServico}
+                        onChange={handleChange}
+                        required
+                    >
+                        <option value="">Selecione um serviço</option>
+                        {servicos.map(servico => (
+                            <option 
+                                key={`servico-${servico.idServico}`} 
+                                value={servico.idServico}
                             >
-                                <option value="">Selecione um serviço</option>
-                                {servicos.map(servico => (
-                                    <option key={servico.id} value={servico.id}>
-                                        {servico.nome}
-                                    </option>
-                                ))}
-                            </Form.Select>
-                        </Form.Group>
-                    </div>
-                </Collapse>
+                                {servico.nome} - R$ {servico.valor.toFixed(2)} - {servico.duracao}
+                            </option>
+                        ))}
+                    </Form.Select>
+                </Form.Group>
 
                 <Button
-                    variant='primary'
-                    type='button'
+                    variant="primary"
+                    type="button"
                     onClick={() => setExpanded(!expanded)}
-                    style={{marginTop: '10px', float:'right'}}>
+                    style={{ marginTop: '10px', float: 'right' }}
+                >
                     {expanded ? <i className="bi bi-chevron-double-up"></i> : <i className="bi bi-chevron-double-down"></i>}
                 </Button>
+
                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
                     <Button
-                        variant='success'
-                        type='submit'
+                        variant="success"
+                        type="submit"
                         className="save"
-                        disabled={!novoEvento.title || !novoEvento.start|| !novoEvento.end}
+                        disabled={!novoEvento.cliente.id || !novoEvento.servico.idServico || !novoEvento.dataHora}
                     >
                         Salvar
                     </Button>
