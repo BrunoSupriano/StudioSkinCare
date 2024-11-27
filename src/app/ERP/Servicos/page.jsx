@@ -27,12 +27,33 @@ const Servicos = () => {
         }, 2000);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Lógica de submissão do serviço aqui
-        closeModal();
-        openSuccessModal();
+    const handleSubmit = async (e) => {
+        e.preventDefault(); 
+        try {
+            const response = await fetch('http://localhost:8080/servicos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData), 
+            });
+            if (response.ok) {
+                const novoServico = await response.json();
+                console.log('Serviço cadastrado:', novoServico);
+    
+                setFormData({ nome: '', duracao: '', valor: '' });
+                setIsFormDirty(false);
+                openSuccessModal();
+            } else {
+                console.error('Erro ao cadastrar o serviço');
+                alert('Erro ao cadastrar o serviço. Tente novamente.');
+            }
+        } catch (error) {
+            console.error('Erro ao conectar com o servidor:', error);
+            alert('Erro ao conectar com o servidor. Verifique sua conexão.');
+        }
+    
+        closeModal(); 
     };
+    
 
     const handleCancel = () => {
         if (isFormDirty) {

@@ -1,23 +1,30 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Table from '../../Components/Table/Table.jsx';
-import ServiceForm from './ServiceForm.jsx';
+import ServiceForm from './ServiceForm';
 
-const DataTable = () => {
+const ServicosDataTable = () => {
+    const [servicos, setServicos] = useState([]);
     const [selectedServico, setSelectedServico] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:8080/servicos')
-            .then(response => response.json())
-            .then(data => setData(data))
-            .catch(error => console.error('Error fetching data:', error));
+        const fetchServicos = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/servicos');
+                if (!response.ok) {
+                    throw new Error(`Erro na requisição: ${response.status}`);
+                }
+                const data = await response.json();
+                setServicos(data);
+            } catch (error) {
+                console.error("Erro ao buscar serviços:", error);
+            }
+        };
+
+        fetchServicos();
     }, []);
 
     const openEditModal = (servico) => {
-        console.log('Serviço selecionado para edição:', servico); // Diagnóstico
         setSelectedServico(servico);
         setIsEditModalOpen(true);
     };
@@ -27,105 +34,72 @@ const DataTable = () => {
         setSelectedServico(null);
     };
 
-    const openConfirmModal = () => {
-        setIsConfirmModalOpen(true);
-    };
-
-    const closeConfirmModal = () => {
-        setIsConfirmModalOpen(false);
-    };
-
-    const openDeleteModal = () => {
-        setIsDeleteModalOpen(true);
-    };
-
-    const closeDeleteModal = () => {
-        setIsDeleteModalOpen(false);
-    };
-
-    const handleEditSubmit = (e) => {
+    const handleEditSubmit = async (e) => {
         e.preventDefault();
-        openConfirmModal();
-    };
-
-    const confirmEdit = () => {
-        fetch(`http://localhost:8080/servicos/${selectedServico.id_servico}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(selectedServico),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Erro ao editar o serviço.');
-                }
-                return response.json();
-            })
-            .then((updatedServico) => {
-                setData((prevData) =>
-                    prevData.map((servico) =>
-                        servico.id_servico === updatedServico.id_servico ? updatedServico : servico
+        console.log("Iniciando submissão de edição:", selectedServico);
+    
+        if (!selectedServico || !selectedServico.idServico) {
+            console.error("Erro: serviço selecionado inválido ou ID ausente.");
+            return;
+        }
+    
+        try {
+            const response = await fetch(`http://localhost:8080/servicos/${selectedServico.idServico}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectedServico),
+            });
+    
+            if (response.ok) {
+                console.log("Serviço editado com sucesso");
+                const updatedServico = await response.json();
+    
+                setServicos((prevServicos) =>
+                    prevServicos.map((servico) =>
+                        servico.idServico === updatedServico.idServico ? updatedServico : servico
                     )
                 );
-                closeConfirmModal();
                 closeEditModal();
-            })
-            .catch((error) => {
-                console.error('Erro ao editar serviço:', error);
+            } else {
+                console.error("Erro ao editar serviço, status:", response.status);
+            }
+        } catch (error) {
+            console.error("Erro ao enviar os dados editados:", error);
+        }
+    };
+    
+
+    const confirmDelete = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/servicos/${selectedServico.idServico}`, {
+                method: 'DELETE',
             });
-    };
-
-
-    const handleEditChange = (e) => {
-        setSelectedServico({ ...selectedServico, [e.target.name]: e.target.value });
-    };
-
-    const confirmDelete = () => {
-        console.log('ID para exclusão:', selectedServico?.id_servico); // Diagnóstico
-        fetch(`http://localhost:8080/servicos/${selectedServico.id_servico}`, {
-            method: 'DELETE',
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Erro ao excluir o serviço.');
-                }
-                setData((prevData) =>
-                    prevData.filter((servico) => servico.id_servico !== selectedServico.id_servico)
+            if (response.ok) {
+                setServicos((prevServicos) =>
+                    prevServicos.filter((servico) => servico.idServico !== selectedServico.idServico)
                 );
-                closeDeleteModal();
                 closeEditModal();
-            })
-            .catch((error) => {
-                console.error('Erro ao excluir serviço:', error);
-            });
+            } else {
+                console.error("Erro ao excluir serviço");
+            }
+        } catch (error) {
+            console.error("Erro ao excluir serviço:", error);
+        }
     };
 
     const columns = useMemo(
         () => [
             { Header: 'Nome', accessor: 'nome' },
-            { 
-                Header: 'Duração', 
-                accessor: 'duracao',
-                Cell: ({ value }) => {
-                    const [hours, minutes] = value.split(':');
-                    return `${hours}:${minutes}`;
-                }
-            },
-            { 
-                Header: 'Valor (R$)', 
-                accessor: 'valor',
-                Cell: ({ value }) => `R$ ${parseFloat(value).toFixed(2).replace('.', ',')}` 
-            },
+            { Header: 'Duração', accessor: 'duracao' },
+            { Header: 'Valor', accessor: 'valor' },
             {
                 Header: 'Ações',
                 accessor: 'acoes',
                 Cell: ({ row }) => (
                     <button
-                        onClick={() => {
-                            setSelectedServico(row.original);
-                            openEditModal(row.original);
-                        }}
+                        onClick={() => openEditModal(row.original)}
                         className="text-white bg-pink-500 hover:bg-pink-600 rounded px-2 py-1"
                     >
                         Editar
@@ -136,88 +110,33 @@ const DataTable = () => {
         []
     );
 
-
     return (
         <>
-            <Table columns={columns} data={data} />
-
+            <Table columns={columns} data={servicos} />
+            {/* Modal de Edição */}
             {isEditModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
                         <h2 className="title text-center">Editar Serviço</h2>
                         <ServiceForm
                             handleSubmit={handleEditSubmit}
-                            handleChange={handleEditChange}
-                            servico={selectedServico}
+                            handleChange={(e) =>
+                                setSelectedServico({
+                                    ...selectedServico,
+                                    [e.target.name]: e.target.value,
+                                })
+                            }
+                            formData={selectedServico}
                         />
                         <div className="flex justify-between mt-4">
                             <button
-                                onClick={openDeleteModal}
-                                className="text-red-600 hover:text-red-800"
+                                onClick={handleEditSubmit}
+                                className="Action bg-green-500 hover:bg-green-600 text-white rounded px-4 py-2"
                             >
-                                Excluir Serviço
+                                Salvar Edição
                             </button>
-                            <div>
-                                <button
-                                    onClick={closeEditModal}
-                                    className="text-gray-600 hover:text-gray-800 mr-4"
-                                >
-                                    Cancelar
-                                </button>
-                                <button
-                                    onClick={handleEditSubmit}
-                                    className="text-white bg-pink-500 hover:bg-pink-600 rounded px-4 py-2"
-                                >
-                                    Salvar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {isConfirmModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                    <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
-                        <h2 className="text-lg font-semibold mb-4">Confirmar Alterações</h2>
-                        <p>Tem certeza que deseja salvar as alterações feitas no serviço?</p>
-                        <div className="flex justify-end mt-4">
-                            <button
-                                onClick={closeConfirmModal}
-                                className="text-gray-600 hover:text-gray-800 mr-4"
-                            >
+                            <button onClick={closeEditModal} className="Action bg-gray-500 hover:bg-gray-600 text-white rounded px-4 py-2">
                                 Cancelar
-                            </button>
-                            <button
-                                onClick={confirmEdit}
-                                className="text-white bg-pink-500 hover:bg-pink-600 rounded px-4 py-2"
-                            >
-                                Confirmar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {isDeleteModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                    <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
-                        <h2 className="text-lg font-semibold mb-4">Confirmar Exclusão</h2>
-                        <p>Tem certeza que deseja excluir o serviço?</p>
-                        <div className="flex justify-end mt-4">
-                            <button
-                                onClick={closeDeleteModal}
-                                className="text-gray-600 hover:text-gray-800 mr-4"
-                            >
-                                Cancelar
-                            </button>
-                            <button
-                                onClick={confirmDelete}
-                                disabled={!selectedServico?.id_servico}
-                                className={`text-white rounded px-4 py-2 ${selectedServico?.id_servico ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-300 cursor-not-allowed'
-                                    }`}
-                            >
-                                Excluir
                             </button>
                         </div>
                     </div>
@@ -227,4 +146,4 @@ const DataTable = () => {
     );
 };
 
-export default DataTable;
+export default ServicosDataTable;
