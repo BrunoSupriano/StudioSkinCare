@@ -8,11 +8,7 @@ CREATE TABLE usuario (
 
 INSERT INTO "usuario" ("nome", "cpf", "email", "senha") 
 VALUES 
-  ('João Silva', '12345678901', 'joao.silva@example.com', 'senha123'),
-  ('Maria Oliveira', '98765432100', 'maria.oliveira@example.com', 'senha456'),
-  ('Carlos Pereira', '11122334455', 'carlos.pereira@example.com', 'senha789'),
-  ('Ana Costa', '55544332211', 'ana.costa@example.com', 'senha101'),
-  ('Lucas Almeida', '44455566677', 'lucas.almeida@example.com', 'senha202');
+  ('Franciele Darós', '12345678901', 'francieledaros@gmail.com', 'admin');
 
 CREATE TABLE cliente (
   id_cliente SERIAL PRIMARY KEY,
@@ -34,27 +30,7 @@ INSERT INTO cliente (nome, telefone, cpf, email, nascimento, endereco) VALUES
 ('Gabriela Costa', '11987654322', '78901234567', 'gabriela.costa@email.com', '1995-02-19', 'Rua G, 404, São Paulo'),
 ('Helena Martins', '11876543211', '89012345680', 'helena.martins@email.com', '1989-03-14', 'Avenida H, 505, São Paulo'),
 ('Isabela Almeida', '11923456788', '90123456781', 'isabela.almeida@email.com', '1993-12-01', 'Rua I, 606, São Paulo'),
-('Juliana Fernandes', '11987654323', '01234567894', 'juliana.fernandes@email.com', '1987-07-28', 'Avenida J, 707, São Paulo'),
-('Karla Lima', '11934567891', '12345678902', 'karla.lima@email.com', '1990-09-15', 'Rua K, 808, São Paulo'),
-('Larissa Nunes', '11876543212', '23456789013', 'larissa.nunes@email.com', '1981-10-25', 'Avenida L, 909, São Paulo'),
-('Mariana Rocha', '11965432110', '34567890124', 'mariana.rocha@email.com', '1994-05-30', 'Rua M, 101, São Paulo'),
-('Natália Almeida', '11897654322', '45678901235', 'natalia.almeida@email.com', '1986-08-12', 'Avenida N, 202, São Paulo'),
-('Olivia Azevedo', '11987654324', '56789012346', 'olivia.azevedo@email.com', '1991-04-23', 'Rua O, 303, São Paulo'),
-('Priscila Campos', '11923456787', '67890123457', 'priscila.campos@email.com', '1984-11-02', 'Avenida P, 404, São Paulo'),
-('Queila Andrade', '11876543213', '78901234568', 'queila.andrade@email.com', '1987-01-15', 'Rua Q, 505, São Paulo'),
-('Raquel Almeida', '11987654325', '89012345681', 'raquel.almeida@email.com', '1992-06-25', 'Avenida R, 606, São Paulo'),
-('Sabrina Campos', '11934567892', '90123456780', 'sabrina.campos@email.com', '1985-07-19', 'Rua S, 707, São Paulo'),
-('Tatiane Oliveira', '11987654326', '01234567895', 'tatiane.oliveira@email.com', '1993-03-29', 'Avenida T, 808, São Paulo'),
-('Ursula Silva', '11876543214', '12345678903', 'ursula.silva@email.com', '1980-12-03', 'Rua U, 909, São Paulo'),
-('Viviane Lima', '11923456786', '23456789014', 'viviane.lima@email.com', '1989-10-17', 'Avenida V, 101, São Paulo'),
-('Walquiria Pereira', '11987654327', '34567890125', 'walquiria.pereira@email.com', '1991-04-28', 'Rua W, 202, São Paulo'),
-('Ximena Santos', '11876543215', '45678901236', 'ximena.santos@email.com', '1978-06-12', 'Avenida X, 303, São Paulo'),
-('Yasmin Costa', '11965432111', '56789012347', 'yasmin.costa@email.com', '1994-09-05', 'Rua Y, 404, São Paulo'),
-('Zélia Campos', '11934567893', '67890123458', 'zelia.campos@email.com', '1983-11-22', 'Avenida Z, 505, São Paulo'),
-('Aline Nunes', '11897654323', '78901234569', 'aline.nunes@email.com', '1992-03-13', 'Rua AA, 606, São Paulo'),
-('Beatriz Santos', '11987654328', '89012345679', 'beatriz.santos@email.com', '1986-05-24', 'Avenida BB, 707, São Paulo'),
-('Camila Almeida', '11923456785', '90123456790', 'camila.almeida@email.com', '1989-12-14', 'Rua CC, 808, São Paulo'),
-('Diana Oliveira', '11987654329', '01234567896', 'diana.oliveira@email.com', '1990-08-30', 'Avenida DD, 909, São Paulo');
+('Juliana Fernandes', '11987654323', '01234567894', 'juliana.fernandes@email.com', '1987-07-28', 'Avenida J, 707, São Paulo');
 
 CREATE TABLE servico (
   id_servico SERIAL PRIMARY KEY,
