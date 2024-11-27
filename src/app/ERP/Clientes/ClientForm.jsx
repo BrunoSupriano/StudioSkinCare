@@ -1,8 +1,24 @@
 import React from 'react';
 
-const ClienteForm = ({ handleSubmit, handleChange, formData = {} }) => {
+const ClienteForm = ({ handleSubmit, handleChange, formData = {}, formErrors = {} }) => {
+    const validateForm = () => {
+        const { nome, telefone, cpf } = formData;
+        if (!nome || !telefone || !cpf) {
+            alert('Os campos Nome, Telefone e CPF são obrigatórios.');
+            return false;
+        }
+        return true;
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        if (validateForm()) {
+            handleSubmit(e);
+        }
+    };
+
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} id="clienteForm">
             <div>
                 <label className="formlabel">Nome</label>
                 <input
@@ -10,9 +26,11 @@ const ClienteForm = ({ handleSubmit, handleChange, formData = {} }) => {
                     name="nome"
                     value={formData.nome || ''}
                     onChange={handleChange}
-                    className="Custom-input"
+                    className={`Custom-input ${formErrors.nome ? 'border-red-500' : ''}`}
                     placeholder="Digite o nome"
+                    required
                 />
+                {formErrors.nome && <p className="text-red-500 text-sm">{formErrors.nome}</p>}
             </div>
             <div>
                 <label className="formlabel">Telefone</label>
@@ -21,10 +39,13 @@ const ClienteForm = ({ handleSubmit, handleChange, formData = {} }) => {
                     name="telefone"
                     value={formData.telefone || ''}
                     onChange={handleChange}
-                    className="Custom-input"
+                    className={`Custom-input ${formErrors.telefone ? 'border-red-500' : ''}`}
                     placeholder="Digite o telefone"
+                    required
                 />
+                {formErrors.telefone && <p className="text-red-500 text-sm">{formErrors.telefone}</p>}
             </div>
+
             <div>
                 <label className="formlabel">Endereço</label>
                 <input
@@ -43,9 +64,11 @@ const ClienteForm = ({ handleSubmit, handleChange, formData = {} }) => {
                     name="cpf"
                     value={formData.cpf || ''}
                     onChange={handleChange}
-                    className="Custom-input"
+                    className={`Custom-input ${formErrors.cpf ? 'border-red-500' : ''}`}
                     placeholder="Digite o CPF"
+                    required
                 />
+                {formErrors.cpf && <p className="text-red-500 text-sm">{formErrors.cpf}</p>}
             </div>
             <div>
                 <label className="formlabel">Email</label>

@@ -11,6 +11,7 @@ const Clientes = () => {
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
     const [isFormDirty, setIsFormDirty] = useState(false);
+    const [formErrors, setFormErrors] = useState({});
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
@@ -29,11 +30,42 @@ const Clientes = () => {
         closeModal(); // Fecha o modal de cadastro aqui
         setTimeout(() => {
             setIsSuccessModalOpen(false);
+            window.location.reload(); // Adiciona um refresh na página
         }, 2000);
     };
-
+    
+    const validateForm = () => {
+        const errors = {};
+        if (!formData.nome.trim()) {
+            errors.nome = 'Nome é obrigatório';
+        }
+        if (!formData.telefone.trim()) {
+            errors.telefone = 'Telefone é obrigatório';
+        }
+        if (!formData.cpf.trim()) {
+            errors.cpf = 'CPF é obrigatório';
+        }
+        
+        // Adicionalmente, você pode adicionar validações mais específicas
+        // Como formato de telefone ou CPF
+        if (formData.telefone && !/^\d{10,11}$/.test(formData.telefone.replace(/\D/g, ''))) {
+            errors.telefone = 'Telefone inválido';
+        }
+        
+        if (formData.cpf && !/^\d{11}$/.test(formData.cpf.replace(/\D/g, ''))) {
+            errors.cpf = 'CPF inválido';
+        }
+    
+        return errors;
+    };
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setFormErrors(errors);
+            return;
+        }
         console.log(formData);
         try {
             const response = await fetch('http://localhost:8080/cliente', {
@@ -53,6 +85,7 @@ const Clientes = () => {
                     email: '',
                     nascimento: ''
                 });
+                setFormErrors({});
             } else {
                 console.error("Erro ao adicionar cliente");
             }
@@ -78,6 +111,7 @@ const Clientes = () => {
     const handleChange = (e) => {
         setIsFormDirty(true);
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormErrors({ ...formErrors, [e.target.name]: '' });
     };
 
     return (
@@ -95,7 +129,7 @@ const Clientes = () => {
                             Novo Cliente
                         </button>
                     </div>
-                    <DataTable />
+                    <DataTable  />
                 </div>
             </div>
 
@@ -104,17 +138,17 @@ const Clientes = () => {
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
                         <h2 className="title text-center">Cadastrar Cliente</h2>
-                        <ClienteForm handleSubmit={handleSubmit} handleChange={handleChange} formData={formData} />
-                        <div className="flex justify-end mt-4">
+                        <ClienteForm handleSubmit={handleSubmit} handleChange={handleChange} formData={formData} formErrors={formErrors} />
+                        <div className="flex justify-between mt-4">
                             <button 
                                 onClick={handleCancel} 
-                                className="text-gray-600 hover:text-gray-800 mr-4"
+                                className="Action bg-gray-500 hover:bg-gray-600 text-white rounded px-4 py-2"
                             >
                                 Cancelar
                             </button>
                             <button 
-                                type="button"
-                                onClick={handleSubmit}
+                                type="submit"
+                                form="clienteForm"
                                 className="text-white bg-pink-500 hover:bg-pink-600 rounded px-4 py-2"
                             >
                                 Cadastrar Cliente

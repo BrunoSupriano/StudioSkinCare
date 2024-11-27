@@ -1,25 +1,24 @@
 "use client";
-import React, { useState } from 'react';
-import { useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Sidebar from '../../Components/SideBar/SideBar.jsx';
 import Table from '../../Components/Table/Table.jsx';
 import './financeiro.css'
 
-
 const Financeiro = () => {
+    const [selectedMonth, setSelectedMonth] = useState('Novembro');
+    const [financeiros, setFinanceiros] = useState([]);
 
-    const [cliente, setCliente] = useState({ cpf: '', nome: '', endereco: '', celular: '', aniversario: '' });
-    const [selectedMonth, setSelectedMonth] = useState('Janeiro');
-
-    const handleChange = (e) => {
-        setCliente({ ...cliente, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(cliente);
-    };
-
+    useEffect(() => {
+        fetch('http://localhost:8080/financeiro')
+            .then(response => response.json())
+            .then(data => {
+                const mappedData = data.map(item => ({
+                    ...item.financeiro,
+                    nomeCliente: item.nomeCliente
+                }));
+                setFinanceiros(mappedData);
+            });
+    }, []);
 
     const handleMonthChange = (e) => {
         setSelectedMonth(e.target.value);
@@ -29,48 +28,48 @@ const Financeiro = () => {
         () => [
             {
                 Header: 'ID',
-                accessor: 'id',
+                accessor: 'idFinanceiro',
             },
             {
-                Header: 'Nome',
-                accessor: 'nome',
+                Header: 'ID Agenda',
+                accessor: 'idAgenda',
             },
             {
-                Header: 'Telefone',
-                accessor: 'telefone',
-            },
-            {
-                Header: 'Serviço',
-                accessor: 'servico',
+                Header: 'Nome Cliente',
+                accessor: 'nomeCliente',
             },
             {
                 Header: 'Valor',
                 accessor: 'valor',
+                Cell: ({ value }) => `R$ ${value.toFixed(2)}`
             },
             {
-                Header: 'Situação',
-                accessor: 'situacao',
+                Header: 'Data Serviço',
+                accessor: 'dataPagamento',
+                Cell: ({ value }) => new Date(value).toLocaleDateString()
             },
             {
-                Header: 'Mês',
-                accessor: 'mes',
+                Header: 'Forma Pagamento',
+                accessor: 'formaPagamento',
             },
+            {
+                Header: 'Status',
+                accessor: 'status',
+            }
         ],
         []
     );
 
-    const dataTable = useMemo(
-        () => [
-            { id: 1, nome: 'Alice', telefone: '123-456-7890', servico: 'Extensão de cílios', valor: 200.00, situacao: 'Pago', mes: 'Janeiro' },
-            { id: 2, nome: 'Maria', telefone: '987-654-3210', servico: 'Limpeza de pele', valor: 150.00, situacao: 'Pendente', mes: 'Fevereiro' },
-            { id: 3, nome: 'Joana', telefone: '111-222-3333', servico: 'Lash lifting', valor: 100.00, situacao: 'Pago', mes: 'Janeiro' },
-            { id: 4, nome: 'Carla', telefone: '444-555-6666', servico: 'Dermaplaning', valor: 50.00, situacao: 'Pago', mes: 'Março' }
-        ],
-        []
-    );
-
-
-    const filteredData = dataTable.filter(item => item.mes === selectedMonth);
+    // Filtrar por mês da data
+    const filteredData = financeiros.filter(item => {
+        const dataItem = new Date(item.data);
+        const monthNames = [
+            'Janeiro', 'Fevereiro', 'Março', 'Abril', 
+            'Maio', 'Junho', 'Julho', 'Agosto', 
+            'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        ];
+        return monthNames[dataItem.getMonth()] === selectedMonth;
+    });
 
     const totalValue = filteredData.reduce((total, item) => total + item.valor, 0);
 

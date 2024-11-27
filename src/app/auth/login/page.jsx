@@ -71,6 +71,9 @@ const Login = () => {
                 <p className="mt-5 text-sm text-pink-600 text-center">
                     Não tem uma conta? <a href="/auth/register" className="text-pink-500 font-bold">Cadastre-se</a>
                 </p>
+                <p className="mt-2 text-sm text-pink-600 text-center">
+                    Esqueceu sua senha? <a href="/auth/forgot-password" className="text-pink-500 font-bold">Clique aqui</a>
+                </p>
             </div>
         </div>
     );
