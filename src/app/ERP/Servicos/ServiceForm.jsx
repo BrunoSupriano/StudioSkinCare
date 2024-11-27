@@ -1,14 +1,14 @@
 import React from 'react';
 
-const ServiceForm = ({ handleSubmit, handleChange, servico }) => {
+const ServiceForm = ({ handleSubmit, handleChange, formData: formData }) => {
     return (
-        <form onSubmit={handleSubmit}>
+        <form id="service-form" onSubmit={handleSubmit}>
             <div style={{ marginBottom: '1rem' }}>
                 <label className="formlabel">Nome do serviço:</label>
                 <input
                     type="text"
                     name="nome"
-                    value={servico?.nome || ''} // Exibe o nome existente ou vazio
+                    value={formData?.nome || ''}
                     onChange={handleChange}
                     className="Custom-input"
                     placeholder="Digite o nome do serviço"
@@ -19,7 +19,7 @@ const ServiceForm = ({ handleSubmit, handleChange, servico }) => {
                 <input
                     type="number"
                     name="valor"
-                    value={servico?.valor || ''} // Exibe o valor existente ou vazio
+                    value={formData?.valor || ''} 
                     onChange={handleChange}
                     className="Custom-input"
                     placeholder="Digite o valor em reais"
@@ -31,7 +31,7 @@ const ServiceForm = ({ handleSubmit, handleChange, servico }) => {
                 <input
                     type="time"
                     name="duracao"
-                    value={servico?.duracao || ''} // Exibe a duração existente ou vazio
+                    value={formData?.duracao || ''} 
                     onChange={handleChange}
                     className="Custom-input"
                 />
