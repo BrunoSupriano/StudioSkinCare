@@ -23,7 +23,7 @@ public class ClientModel {
     @Column(name = "telefone")
     private String telefone;
     
-    @Column(name = "cpf")
+    @Column(name = "cpf", unique=true, nullable=true)
     private String cpf;
     
     @Column(name = "email")
