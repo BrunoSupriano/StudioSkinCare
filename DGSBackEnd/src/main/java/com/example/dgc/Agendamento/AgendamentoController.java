@@ -32,8 +32,9 @@ public class AgendamentoController {
         Logger logger = LoggerFactory.getLogger(this.getClass());  // Create a logger instance
     
         // Verificar se os campos obrigatórios estão presentes
-        if (agendamentoRequest.getDataInicial() == null || agendamentoRequest.getDataFinal() == null) {
-            return ResponseEntity.badRequest().body("As datas inicial e final são obrigatórias");
+        if (agendamentoRequest.getDataInicial() == null || agendamentoRequest.getDataFinal() == null 
+            || agendamentoRequest.getId_servicos() == null || agendamentoRequest.getId_servicos().isEmpty()) {
+            return ResponseEntity.badRequest().body("As datas inicial, final e os serviços são obrigatórios");
         }
     
         LocalDateTime dataInicial;
@@ -48,60 +49,79 @@ public class AgendamentoController {
     
         try {
             // Forma mais segura de lidar com o status possivelmente nulo
-            Integer status = Optional.ofNullable(agendamentoRequest.getStatus())
-                .orElse(1);  // Valor padrão é 1
+            Integer status = Optional.ofNullable(agendamentoRequest.getStatus()).orElse(1);  // Valor padrão é 1
     
-            AgendamentoModel agendamento = agendamentoService.agendar(
+            // Criar múltiplos agendamentos para cada serviço
+            agendamentoService.agendar(
                 agendamentoRequest.getId_cliente(),
-                agendamentoRequest.getId_servico(),
+                agendamentoRequest.getId_servicos(),
                 dataInicial,
                 dataFinal,
                 status
             );
-            return ResponseEntity.ok(agendamento);
+            return ResponseEntity.ok("Agendamentos realizados com sucesso!");
         } catch (RuntimeException e) {
-            logger.error("Erro ao agendar: {}", e.getMessage(), e); // Log the error with the exception stack trace
+            logger.error("Erro ao agendar: {}", e.getMessage(), e);  // Log the error with the exception stack trace
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            logger.error("Erro interno no servidor: {}", e.getMessage(), e); // Log the error with the exception stack trace
+            logger.error("Erro interno no servidor: {}", e.getMessage(), e);  // Log the error with the exception stack trace
             return ResponseEntity.internalServerError().body("Erro interno do servidor: " + e.getMessage());
         }
     }
+
     @GetMapping
     public List<AgendamentoModel> listarTodos() {
         return agendamentoService.listarTodos();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AgendamentoModel> atualizar(
-            @PathVariable Long id,
-            @RequestBody AgendamentoRequest agendamentoRequest) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody AgendamentoRequest agendamentoRequest) {
+        Logger logger = LoggerFactory.getLogger(this.getClass());  // Create a logger instance
+
+        // Verificar se os campos obrigatórios estão presentes
+        if (agendamentoRequest.getDataInicial() == null || agendamentoRequest.getDataFinal() == null 
+            || agendamentoRequest.getId_servicos() == null || agendamentoRequest.getId_servicos().isEmpty()) {
+            return ResponseEntity.badRequest().body("As datas inicial, final e os serviços são obrigatórios");
+        }
     
+        LocalDateTime dataInicial;
+        LocalDateTime dataFinal;
+        
         try {
-            LocalDateTime dataInicialParsed = LocalDateTime.parse(agendamentoRequest.getDataInicial());
-            LocalDateTime dataFinalParsed = LocalDateTime.parse(agendamentoRequest.getDataFinal());
+            dataInicial = LocalDateTime.parse(agendamentoRequest.getDataInicial());
+            dataFinal = LocalDateTime.parse(agendamentoRequest.getDataFinal());
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body("Formato de data/hora inválido. Use o formato: yyyy-MM-ddTHH:mm:ss");
+        }
+
+        try {
+            Integer status = Optional.ofNullable(agendamentoRequest.getStatus()).orElse(1);  // Valor padrão é 1
     
-            AgendamentoModel agendamento = agendamentoService.atualizar(
+            agendamentoService.atualizar(
                 id,
                 agendamentoRequest.getId_cliente(),
-                agendamentoRequest.getId_servico(),
-                dataInicialParsed,
-                dataFinalParsed,
-                agendamentoRequest.getStatus()
+                agendamentoRequest.getId_servicos(),
+                dataInicial,
+                dataFinal,
+                status
             );
-            return ResponseEntity.ok(agendamento);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.ok("Agendamento atualizado com sucesso!");
+        } catch (RuntimeException e) {
+            logger.error("Erro ao atualizar agendamento: {}", e.getMessage(), e);  // Log the error with the exception stack trace
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }    
+    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
+        Logger logger = LoggerFactory.getLogger(this.getClass());  // Create a logger instance
+
         try {
             agendamentoService.deletar(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok("Agendamento deletado com sucesso!");
+        } catch (RuntimeException e) {
+            logger.error("Erro ao deletar agendamento: {}", e.getMessage(), e);  // Log the error with the exception stack trace
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

@@ -7,11 +7,7 @@ function Adicionar({ onAdicionar }) {
             id: '',
             nome: ''
         },
-        servico: {
-            idServico: '',
-            nome: '',
-            duracao: ''
-        },
+        servicos: [], // Alterado para um array de serviços
         dataHora: '',
     });
     const [expanded, setExpanded] = useState(false);
@@ -56,30 +52,27 @@ function Adicionar({ onAdicionar }) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        
+
         if (name === 'cliente') {
             const selectedClient = clientes.find(c => c.id === parseInt(value));
             setNovoEvento(prev => ({
                 ...prev,
-                cliente: selectedClient 
+                cliente: selectedClient
                     ? { id: selectedClient.id, nome: selectedClient.nome }
                     : { id: '', nome: '' }
             }));
-        } 
+        }
         else if (name === 'servico') {
             const selectedService = servicos.find(s => s.idServico === parseInt(value));
-            console.log('Serviço selecionado:', selectedService);
-            setNovoEvento(prev => ({
-                ...prev,
-                servico: selectedService 
-                    ? { 
-                        idServico: selectedService.idServico,
-                        nome: selectedService.nome,
-                        valor: selectedService.valor,
-                        duracao: selectedService.duracao
-                    }
-                    : { idServico: '', nome: '', duracao: '' }
-            }));
+
+            if (selectedService) {
+                setNovoEvento(prev => {
+                    const updatedServicos = prev.servicos.some(s => s.idServico === selectedService.idServico)
+                        ? prev.servicos
+                        : [...prev.servicos, selectedService];
+                    return { ...prev, servicos: updatedServicos };
+                });
+            }
         }
         else if (name === 'dataHora') {
             setNovoEvento(prev => ({
@@ -103,28 +96,39 @@ function Adicionar({ onAdicionar }) {
         return data.toISOString().slice(0, 19);
     };
 
+    // Função para remover serviço da lista de serviços selecionados
+    const removerServico = (idServico) => {
+        setNovoEvento(prev => ({
+            ...prev,
+            servicos: prev.servicos.filter(s => s.idServico !== idServico)
+        }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const dataInicial = new Date(novoEvento.dataHora);
-            const dataFinal = calcularDataFinal(dataInicial, novoEvento.servico.duracao);
 
-            const agendamentoData = {
-                id_cliente: parseInt(novoEvento.cliente.id),
-                id_servico: parseInt(novoEvento.servico.idServico),
-                dataInicial: formatarData(dataInicial),
-                dataFinal: formatarData(dataFinal),
-                status: 1
-            };
+            const agendamentos = novoEvento.servicos.map(servico => {
+                const dataFinal = calcularDataFinal(dataInicial, servico.duracao);
 
-            console.log('Dados do agendamento a serem enviados:', agendamentoData);
+                return {
+                    id_cliente: parseInt(novoEvento.cliente.id),
+                    id_servico: parseInt(servico.idServico),
+                    dataInicial: formatarData(dataInicial),
+                    dataFinal: formatarData(dataFinal),
+                    status: 1
+                };
+            });
+
+            console.log('Dados de agendamento a serem enviados:', agendamentos);
 
             const response = await fetch('http://localhost:8080/agendamento', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(agendamentoData),
+                body: JSON.stringify(agendamentos),
             });
 
             if (!response.ok) {
@@ -134,25 +138,25 @@ function Adicionar({ onAdicionar }) {
 
             const responseData = await response.json();
 
-            const eventoCalendario = {
-                title: `${novoEvento.cliente.nome} - ${novoEvento.servico.nome}`,
-                start: dataInicial,
-                end: dataFinal,
-                resource: responseData
-            };
+            const eventoCalendario = agendamentos.map(agendamento => ({
+                title: `${novoEvento.cliente.nome} - ${servicos.find(s => s.idServico === agendamento.id_servico).nome}`,
+                start: new Date(agendamento.dataInicial),
+                end: new Date(agendamento.dataFinal),
+                resource: responseData,
+            }));
 
-            onAdicionar(eventoCalendario);
+            eventoCalendario.forEach(evento => onAdicionar(evento));
 
             // Reset form
             setNovoEvento({
                 cliente: { id: '', nome: '' },
-                servico: { idServico: '', nome: '', duracao: '' },
+                servicos: [],
                 dataHora: ''
             });
 
-            alert('Agendamento salvo com sucesso!');
+            alert('Agendamentos salvos com sucesso!');
         } catch (error) {
-            console.error('Erro ao salvar agendamento:', error);
+            console.error('Erro ao salvar agendamentos:', error);
             alert('Erro ao salvar o agendamento: ' + error.message);
         }
     };
@@ -199,11 +203,12 @@ function Adicionar({ onAdicionar }) {
                     <Form.Select
                         name="servico"
                         className="Custom-input"
-                        value={novoEvento.servico.idServico}
+                        value={novoEvento.servicos.map(s => s.idServico)}
                         onChange={handleChange}
+                        multiple
                         required
                     >
-                        <option value="">Selecione um serviço</option>
+                        <option value="">Selecione os serviços</option>
                         {servicos.map(servico => (
                             <option 
                                 key={`servico-${servico.idServico}`} 
@@ -213,6 +218,25 @@ function Adicionar({ onAdicionar }) {
                             </option>
                         ))}
                     </Form.Select>
+                </Form.Group>
+
+                <Form.Group controlId="formSelectedServices" className="mb-3">
+                    <Form.Label className="formlabel">Serviços Selecionados</Form.Label>
+                    <ul>
+                        {novoEvento.servicos.map((servico, index) => (
+                            <li key={`servico-${index}`}>
+                                {servico.nome} - R$ {servico.valor.toFixed(2)} - {servico.duracao}
+                                <Button
+                                    variant="danger"
+                                    size="sm"
+                                    style={{ marginLeft: '10px' }}
+                                    onClick={() => removerServico(servico.idServico)}
+                                >
+                                    Remover
+                                </Button>
+                            </li>
+                        ))}
+                    </ul>
                 </Form.Group>
 
                 <Button
@@ -229,7 +253,7 @@ function Adicionar({ onAdicionar }) {
                         variant="success"
                         type="submit"
                         className="save"
-                        disabled={!novoEvento.cliente.id || !novoEvento.servico.idServico || !novoEvento.dataHora}
+                        disabled={!novoEvento.cliente.id || novoEvento.servicos.length === 0 || !novoEvento.dataHora}
                     >
                         Salvar
                     </Button>

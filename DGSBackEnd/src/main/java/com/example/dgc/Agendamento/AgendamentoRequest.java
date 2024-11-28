@@ -1,8 +1,11 @@
 package com.example.dgc.Agendamento;
 
+import java.util.List;
+
 public class AgendamentoRequest {
+
     private Long id_cliente;
-    private Long id_servico;
+    private List<Long> id_servicos;  // Alterado para aceitar uma lista de serviços
     private String dataInicial;
     private String dataFinal;
     private Integer status;
@@ -19,12 +22,12 @@ public class AgendamentoRequest {
         this.id_cliente = id_cliente;
     }
 
-    public Long getId_servico() {
-        return id_servico;
+    public List<Long> getId_servicos() {  // Agora é uma lista de IDs
+        return id_servicos;
     }
 
-    public void setId_servico(Long id_servico) {
-        this.id_servico = id_servico;
+    public void setId_servicos(List<Long> id_servicos) {
+        this.id_servicos = id_servicos;
     }
 
     public String getDataInicial() {

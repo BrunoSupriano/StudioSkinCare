@@ -1,46 +1,36 @@
 package com.example.dgc.Agendamento;
 
-import java.time.LocalDateTime;
-
 import com.example.dgc.Clientes.ClientModel;
 import com.example.dgc.Servicos.ServicosModel;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "agenda")  // Alterado para usar a tabela agenda
+@Table(name = "agendamento")
 public class AgendamentoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_agenda")  // Alterado para id_agenda
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente")
     private ClientModel cliente;
 
-    @ManyToOne
-    @JoinColumn(name = "id_servico", referencedColumnName = "id_servico")
-    private ServicosModel servico;
+    @ManyToMany
+    @JoinTable(
+        name = "agendamento_servico", 
+        joinColumns = @JoinColumn(name = "id_agendamento"), 
+        inverseJoinColumns = @JoinColumn(name = "id_servico")
+    )
+    private List<ServicosModel> servicos;
 
-    @Column(name = "data_inicial")  // Alterado para usar data_inicial
     private LocalDateTime dataInicial;
-
-    @Column(name = "data_final")    // Adicionado data_final
     private LocalDateTime dataFinal;
-
-    @Column(name = "status")        // Adicionado status
     private Integer status;
 
-    // Getters e Setters atualizados
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -57,12 +47,12 @@ public class AgendamentoModel {
         this.cliente = cliente;
     }
 
-    public ServicosModel getServico() {
-        return servico;
+    public List<ServicosModel> getServicos() {
+        return servicos;
     }
 
-    public void setServico(ServicosModel servico) {
-        this.servico = servico;
+    public void setServicos(List<ServicosModel> servicos) {
+        this.servicos = servicos;
     }
 
     public LocalDateTime getDataInicial() {
